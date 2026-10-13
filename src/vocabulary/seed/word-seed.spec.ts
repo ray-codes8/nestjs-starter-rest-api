@@ -109,6 +109,34 @@ describe('toWordSeed', () => {
   });
 });
 
+describe('data fixes', () => {
+  it.each([
+    ['居る', 'いる', '(humble) to be (animate)', 2],
+    ['始まる', 'はじまる', '(something) begins', 1],
+    ['捨てる', 'すてる', 'throw away', 2],
+  ])('%s (%s, "%s") is a verb of group %s', (expression, reading, meaning, group) => {
+    const seed = toWordSeed({ expression, reading, meaning }, JlptLevel.N5);
+    expect(seed?.partOfSpeech).toBe(PartOfSpeech.Verb);
+    expect(seed?.verbGroup).toBe(group);
+  });
+
+  it('repairs a misspelled expression', () => {
+    const seed = toWordSeed({ expression: '落る', reading: 'おちる', meaning: 'to fall' }, JlptLevel.N4);
+    expect(seed?.kanji).toBe('落ちる');
+  });
+
+  it('swaps kanji and kana when the reading column holds the kanji', () => {
+    const seed = toWordSeed({ expression: 'いただく', reading: '頂く', meaning: 'to receive' }, JlptLevel.N4);
+    expect(seed).toEqual(expect.objectContaining({ kanji: '頂く', kana: 'いただく', romaji: 'itadaku' }));
+  });
+
+  it('skips usage notes that are not real meanings', () => {
+    expect(
+      toWordSeed({ expression: '召し上がる', reading: 'めしあがる', meaning: '-- extra-modest expression for たべる and のむ --' }, JlptLevel.N4),
+    ).toBeNull();
+  });
+});
+
 describe('loadWordSeeds on the real data files', () => {
   it.each([JlptLevel.N5, JlptLevel.N4])('%s has words and verbs', (level) => {
     const seeds = loadWordSeeds(fs.readFileSync(wordSeedFilePath(level), 'utf8'), level);

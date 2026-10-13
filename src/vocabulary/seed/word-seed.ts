@@ -33,6 +33,12 @@ const UNSUPPORTED_VERBS = new Set([
   'いらっしゃる', 'おっしゃる', 'くださる', '下さる', 'なさる', 'ござる',
 ]);
 
+// Verbs whose first sense in the data does not start with "to ".
+const VERBS_WITHOUT_TO = new Set(['捨てる', '始まる']);
+
+// Typos in the source data.
+const EXPRESSION_FIXES: Record<string, string> = { 落る: '落ちる' };
+
 const NA_ADJECTIVES = new Set([
   '綺麗', 'きれい', '嫌い', '好き', '大好き', '静か', '元気', '有名', '親切', '便利',
   '暇', '上手', '下手', '大切', '大丈夫', '簡単', '丈夫', '賑やか', '色々', 'いろいろ',
@@ -120,7 +126,10 @@ function classifyPartOfSpeech(
   kana: string,
   meaningEn: string,
 ): PartOfSpeech {
-  if (meaningEn.startsWith('to ') && U_ROW_ENDINGS.includes(kana.slice(-1))) {
+  const plainMeaning = meaningEn.replace(/^\([^)]*\)\s*/, '');
+  const looksLikeVerb =
+    plainMeaning.startsWith('to ') || VERBS_WITHOUT_TO.has(expression);
+  if (looksLikeVerb && U_ROW_ENDINGS.includes(kana.slice(-1))) {
     return PartOfSpeech.Verb;
   }
   if (NA_ADJECTIVES.has(expression)) {
@@ -140,11 +149,22 @@ export function toWordSeed(
   row: { expression: string; reading: string; meaning: string },
   level: JlptLevel,
 ): WordSeed | null {
-  const expression = firstOf(row.expression);
-  const reading = firstOf(row.reading);
+  let expression = firstOf(row.expression);
+  let reading = firstOf(row.reading);
   const meaningEn = firstOf(row.meaning);
 
-  if (!expression || !meaningEn || /^[～〜~]/.test(expression)) {
+  // A few rows have the kanji in the reading column.
+  if (KANJI.test(reading) && !KANJI.test(expression)) {
+    [expression, reading] = [reading, expression];
+  }
+  expression = EXPRESSION_FIXES[expression] ?? expression;
+
+  if (
+    !expression ||
+    !meaningEn ||
+    meaningEn.startsWith('--') ||
+    /^[～〜~]/.test(expression)
+  ) {
     return null;
   }
   if (!reading && KANJI.test(expression)) {
