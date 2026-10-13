@@ -47,6 +47,13 @@ describe('normalizeCard', () => {
 });
 
 describe('normalizeCard alternatives', () => {
+  it('removes spaces inside compound words', () => {
+    const normalized = normalizeCard(
+      card(1, { compounds: [{ word: '社 長', reading: 'しゃちょう', meaningEn: 'company president', meaningRu: 'директор' }] }),
+    );
+    expect(normalized.compounds[0].word).toBe('社長');
+  });
+
   it('keeps the first of several readings written with a slash', () => {
     const normalized = normalizeCard(
       card(1, { compounds: [{ word: '日本', reading: 'にほん/にっぽん', meaningEn: 'Japan', meaningRu: 'Япония' }] }),

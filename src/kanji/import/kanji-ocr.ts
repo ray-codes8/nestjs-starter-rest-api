@@ -71,7 +71,7 @@ export function normalizeCard(card: KanjiCardOcr): KanjiCardOcr {
     kun: clean(card.kun),
     on: clean(card.on),
     // The book sometimes prints alternatives (にほん/にっぽん); the quiz uses the first.
-    compounds: card.compounds.map((c) => ({ ...c, word: c.word.trim(), reading: c.reading.split('/')[0].replace(STRIP, '') })),
+    compounds: card.compounds.map((c) => ({ ...c, word: c.word.replace(/\s/g, ''), reading: c.reading.split('/')[0].replace(STRIP, '') })),
   };
 }
 
