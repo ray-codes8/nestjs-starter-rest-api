@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
+import { QuizModule } from './quiz/quiz.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
@@ -17,6 +18,7 @@ import { VocabularyModule } from './vocabulary/vocabulary.module';
     ArticleModule,
     VocabularyModule,
     ProgressModule,
+    QuizModule,
   ],
   controllers: [AppController],
   providers: [AppService],

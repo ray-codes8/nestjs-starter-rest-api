@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, IsNull, Repository } from 'typeorm';
 
+import { UserWordProgress } from '../../progress/entities/user-word-progress.entity';
+import { JlptLevel } from '../constants/word.constant';
 import { Word } from '../entities/word.entity';
 import { WordSeed } from '../seed/word-seed';
 
@@ -40,5 +42,34 @@ export class WordRepository extends Repository<Word> {
       }
     }
     return { inserted, updated };
+  }
+
+  findForQuiz(
+    userId: number,
+    level: JlptLevel,
+    count: number,
+    verbsOnly: boolean,
+  ): Promise<Word[]> {
+    const query = this.createQueryBuilder('w')
+      .leftJoin(
+        UserWordProgress,
+        'p',
+        'p.wordId = w.id AND p.userId = :userId',
+        { userId },
+      )
+      .where('w.level = :level', { level });
+    if (verbsOnly) {
+      query.andWhere('w.verbGroup IS NOT NULL');
+    }
+    return query
+      .addSelect(
+        `CASE WHEN p."nextReviewAt" <= NOW() THEN 0 WHEN p."id" IS NULL THEN 1 ELSE 2 END`,
+        'priority',
+      )
+      .orderBy('priority', 'ASC')
+      .addOrderBy('p.nextReviewAt', 'ASC', 'NULLS LAST')
+      .addOrderBy('RANDOM()')
+      .limit(count)
+      .getMany();
   }
 }
