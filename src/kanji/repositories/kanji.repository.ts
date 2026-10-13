@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
+import { QuizType } from '../../progress/constants/quiz-type.constant';
+import { UserKanjiProgress } from '../../progress/entities/user-kanji-progress.entity';
 import { Kanji } from '../entities/kanji.entity';
 import { KanjiCompound } from '../entities/kanji-compound.entity';
 import { KanjiData } from '../seed/kanji-seed';
@@ -34,5 +36,29 @@ export class KanjiRepository extends Repository<Kanji> {
       }
     }
     return cards.length;
+  }
+
+  async getByIdWithCompounds(id: number): Promise<Kanji> {
+    const kanji = await this.findOne({ where: { id }, relations: { compounds: true } });
+    if (!kanji) {
+      throw new NotFoundException();
+    }
+    return kanji;
+  }
+
+  // Due kanji first, then never-answered ones, then the rest; random inside each group.
+  findForQuiz(userId: number, quizType: QuizType, from: number, to: number, count: number): Promise<Kanji[]> {
+    return this.createQueryBuilder('k')
+      .leftJoin(UserKanjiProgress, 'up', 'up.kanjiId = k.id AND up.userId = :userId AND up.quizType = :quizType', {
+        userId,
+        quizType,
+      })
+      .where('k.number BETWEEN :from AND :to', { from, to })
+      .addSelect(`CASE WHEN up."nextReviewAt" <= :now THEN 0 WHEN up."id" IS NULL THEN 1 ELSE 2 END`, 'priority')
+      .setParameter('now', new Date())
+      .orderBy('priority', 'ASC')
+      .addOrderBy('RANDOM()')
+      .limit(count)
+      .getMany();
   }
 }
