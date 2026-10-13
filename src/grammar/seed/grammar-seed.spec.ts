@@ -85,4 +85,27 @@ describe('the real grammar.json', () => {
     ]);
     expect(points.reduce((sum, p) => sum + p.exercises.length, 0)).toBeGreaterThanOrEqual(50);
   });
+
+  // Distractors that are grammatical on their own (found in review) must stay out.
+  it.each([
+    ['l37-passive', 0, 'ほめさせました'],
+    ['l34-toori-ato', 0, 'まえ'],
+    ['l34-toori-ato', 4, 'まえ'],
+    ['l35-ba-nara', 6, 'が'],
+    ['n5-particles', 6, 'が'],
+    ['n5-particles', 8, 'を'],
+  ])('%s #%i does not offer the grammatical distractor %s', (code, index, distractor) => {
+    const exercise = points.find((p) => p.code === code)!.exercises[index];
+    expect(exercise.distractors).not.toContain(distractor);
+  });
+
+  it('rules cover the forms the exercises use', () => {
+    const rule = (code: string) => points.find((p) => p.code === code)!;
+    expect(rule('n5-particles').title).toContain('へ');
+    expect(rule('n5-particles').ruleEn).toContain('へ');
+    expect(rule('l34-toori-ato').ruleEn).toMatch(/dictionary/);
+    expect(rule('l35-ba-nara').ruleEn).toMatch(/verb \+ なら|plain-form verb/);
+    expect(rule('l37-passive').ruleEn).toContain('歌う→歌われます');
+    expect(rule('l37-passive').ruleRu).toContain('歌う→歌われます');
+  });
 });
