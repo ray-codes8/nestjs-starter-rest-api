@@ -21,6 +21,7 @@
     "start:prod": "node dist/src/main",
     "cli:dev": "ts-node -r tsconfig-paths/register src/cli.ts",
     "cli:prod": "node dist/src/cli.js",
+    "seed:words": "ts-node -r tsconfig-paths/register src/seed-words.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --runInBand",
