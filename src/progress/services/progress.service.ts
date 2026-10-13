@@ -9,6 +9,7 @@ import { applyAnswer } from '../domain/leitner';
 import { computeStreak, toDayString } from '../domain/streak';
 import { ProgressSummaryOutput } from '../dtos/progress-summary-output.dto';
 import { AnswerLogRepository } from '../repositories/answer-log.repository';
+import { UserExerciseProgressRepository } from '../repositories/user-exercise-progress.repository';
 import { UserWordProgressRepository } from '../repositories/user-word-progress.repository';
 
 const ACCURACY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
@@ -18,6 +19,7 @@ const STREAK_WINDOW_MS = 400 * 24 * 60 * 60 * 1000;
 export class ProgressService {
   constructor(
     private progressRepository: UserWordProgressRepository,
+    private exerciseProgressRepository: UserExerciseProgressRepository,
     private answerLogRepository: AnswerLogRepository,
     private wordRepository: WordRepository,
     private readonly logger: AppLogger,
@@ -50,6 +52,38 @@ export class ProgressService {
       userId,
       wordId,
       quizType,
+      isCorrect,
+      createdAt: now,
+    });
+
+    return next;
+  }
+
+  async recordExerciseAnswer(
+    userId: number,
+    exerciseId: number,
+    isCorrect: boolean,
+    now: Date,
+  ): Promise<{ box: number; nextReviewAt: Date }> {
+    const existing = await this.exerciseProgressRepository.findOne({
+      where: { userId, exerciseId },
+    });
+    const next = applyAnswer(existing?.box ?? null, isCorrect, now);
+
+    await this.exerciseProgressRepository.save({
+      ...existing,
+      userId,
+      exerciseId,
+      box: next.box,
+      nextReviewAt: next.nextReviewAt,
+      correctCount: (existing?.correctCount ?? 0) + (isCorrect ? 1 : 0),
+      wrongCount: (existing?.wrongCount ?? 0) + (isCorrect ? 0 : 1),
+    });
+    await this.answerLogRepository.save({
+      userId,
+      wordId: null,
+      exerciseId,
+      quizType: QuizType.Grammar,
       isCorrect,
       createdAt: now,
     });

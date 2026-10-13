@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEnum,
+  IsIn,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -9,12 +10,15 @@ import {
   Min,
 } from 'class-validator';
 
-import { QuizType } from '../../progress/constants/quiz-type.constant';
+import {
+  QuizType,
+  WORD_QUIZ_TYPES,
+} from '../../progress/constants/quiz-type.constant';
 import { VerbForm } from '../domain/conjugation';
 
 export class QuizAnswerInput {
-  @ApiProperty({ enum: QuizType })
-  @IsEnum(QuizType)
+  @ApiProperty({ enum: WORD_QUIZ_TYPES })
+  @IsIn(WORD_QUIZ_TYPES)
   quizType: QuizType;
 
   @ApiProperty()
