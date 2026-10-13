@@ -1,5 +1,5 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import request from 'supertest';
 
 import { AppModule } from '../../src/app.module';
@@ -12,13 +12,15 @@ import { Word } from '../../src/vocabulary/entities/word.entity';
 import { WordRepository } from '../../src/vocabulary/repositories/word.repository';
 import { createDBEntities, resetDBBeforeTest } from '../test-utils';
 
-export const createNihongoTestApp = async (): Promise<INestApplication> => {
+export const createNihongoTestApp = async (
+  override: (builder: TestingModuleBuilder) => TestingModuleBuilder = (b) => b,
+): Promise<INestApplication> => {
   await resetDBBeforeTest();
   await createDBEntities();
 
-  const moduleRef = await Test.createTestingModule({
-    imports: [AppModule],
-  }).compile();
+  const moduleRef = await override(
+    Test.createTestingModule({ imports: [AppModule] }),
+  ).compile();
 
   const app = moduleRef.createNestApplication();
   app.useGlobalPipes(new ValidationPipe(VALIDATION_PIPE_OPTIONS));

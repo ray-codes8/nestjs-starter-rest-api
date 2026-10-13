@@ -21,5 +21,7 @@ export const configModuleOptions: ConfigModuleOptions = {
     JWT_ACCESS_TOKEN_EXP_IN_SEC: Joi.number().required(),
     JWT_REFRESH_TOKEN_EXP_IN_SEC: Joi.number().required(),
     DEFAULT_ADMIN_USER_PASSWORD: Joi.string().required(),
+    ANTHROPIC_API_KEY: Joi.string().allow('').optional(),
+    ANTHROPIC_MODEL: Joi.string().optional(),
   }),
 };
