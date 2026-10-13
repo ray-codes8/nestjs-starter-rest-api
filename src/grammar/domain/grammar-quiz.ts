@@ -8,6 +8,7 @@ export interface GrammarQuestion {
   pointTitle: string;
   sentence: string;
   translation: { en: string; ru: string };
+  readings: Record<string, string>;
   options: string[];
 }
 
@@ -21,6 +22,7 @@ export function buildGrammarQuestion(
     pointTitle: exercise.point.title,
     sentence: exercise.sentence,
     translation: { en: exercise.translationEn, ru: exercise.translationRu },
+    readings: exercise.readings,
     options: shuffle([exercise.answer, ...exercise.distractors], rng),
   };
 }

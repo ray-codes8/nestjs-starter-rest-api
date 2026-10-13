@@ -1,6 +1,7 @@
 import * as path from 'path';
 
 import { JlptLevel } from '../../vocabulary/constants/word.constant';
+import { KANJI, toRubySegments } from '../domain/ruby';
 
 export const BLANK = '＿＿';
 export const MIN_EXERCISES_PER_POINT = 5;
@@ -9,6 +10,8 @@ export interface GrammarExerciseSeed {
   sentence: string;
   answer: string;
   distractors: string[];
+  // Furigana for this sentence and its options: word or kanji → kana.
+  readings: Record<string, string>;
   translationEn: string;
   translationRu: string;
 }
@@ -33,6 +36,30 @@ export function loadGrammarSeed(text: string): GrammarPointSeed[] {
 }
 
 const isBlank = (text: string | undefined) => !text || text.trim() === '';
+const KANA_ONLY = /^[\u3040-\u30ff]+$/;
+
+function readingErrors(label: string, exercise: GrammarExerciseSeed): string[] {
+  const errors: string[] = [];
+  const readings = exercise.readings ?? {};
+  const texts = [exercise.sentence, exercise.answer, ...exercise.distractors];
+  const missing = new Set<string>();
+  for (const text of texts) {
+    for (const segment of toRubySegments(text, readings)) {
+      if (segment.reading === undefined) {
+        [...segment.text].filter((c) => KANJI.test(c)).forEach((c) => missing.add(c));
+      }
+    }
+  }
+  missing.forEach((kanji) => errors.push(`${label}: missing reading for ${kanji}`));
+  for (const [key, reading] of Object.entries(readings)) {
+    if (!texts.some((text) => text.includes(key))) {
+      errors.push(`${label}: unused reading for ${key}`);
+    } else if (!KANA_ONLY.test(reading)) {
+      errors.push(`${label}: reading for ${key} must be kana`);
+    }
+  }
+  return errors;
+}
 
 export function validateGrammarSeed(points: GrammarPointSeed[]): string[] {
   const errors: string[] = [];
@@ -70,6 +97,7 @@ export function validateGrammarSeed(points: GrammarPointSeed[]): string[] {
       if (isBlank(exercise.translationEn) || isBlank(exercise.translationRu)) {
         errors.push(`${label}: missing translation`);
       }
+      errors.push(...readingErrors(label, exercise));
     });
   }
   return errors;

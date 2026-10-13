@@ -21,6 +21,7 @@ const exercise = {
   sentence: '遅刻しない＿＿、早く家を出ます。',
   answer: 'ように',
   distractors: ['ようと', 'ことに', 'ながら'],
+  readings: { 遅刻: 'ちこく', 早: 'はや', 家: 'いえ', 出: 'で' },
   translationEn: 'I leave home early so as not to be late.',
   translationRu: 'Я выхожу из дома пораньше, чтобы не опоздать.',
 } as GrammarExercise & { point: GrammarPoint };
@@ -34,6 +35,7 @@ describe('buildGrammarQuestion', () => {
       pointTitle: '〜ように',
       sentence: '遅刻しない＿＿、早く家を出ます。',
       translation: { en: exercise.translationEn, ru: exercise.translationRu },
+      readings: { 遅刻: 'ちこく', 早: 'はや', 家: 'いえ', 出: 'で' },
       options: expect.any(Array),
     });
     expect([...question.options].sort()).toEqual(['ことに', 'ながら', 'ように', 'ようと'].sort());

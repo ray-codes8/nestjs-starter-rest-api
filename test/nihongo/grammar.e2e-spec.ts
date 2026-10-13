@@ -41,7 +41,7 @@ describe('Grammar (e2e)', () => {
     expect(questions).toHaveLength(9);
     expect(new Set(questions.map((q: { exerciseId: number }) => q.exerciseId)).size).toBe(9);
     for (const q of questions) {
-      expect(Object.keys(q).sort()).toEqual(['exerciseId', 'lesson', 'options', 'pointTitle', 'sentence', 'translation']);
+      expect(Object.keys(q).sort()).toEqual(['exerciseId', 'lesson', 'options', 'pointTitle', 'readings', 'sentence', 'translation']);
       expect(new Set(q.options).size).toBe(4);
       expect(q.sentence).toContain('＿＿');
     }

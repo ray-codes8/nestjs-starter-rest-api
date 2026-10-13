@@ -9,15 +9,15 @@
       "ruleEn": "は marks the topic; が marks the subject (also with あります/います and 好き/わかります); を marks the direct object; に marks a point in time or a destination; で marks where an action happens or the means (by bus); へ marks the direction of movement; と means 'together with'.",
       "ruleRu": "は выделяет тему; が — подлежащее (а также с あります/います и 好き/わかります); を — прямое дополнение; に — момент времени или пункт назначения; で — место действия или способ (на автобусе); へ — направление движения; と — «вместе с».",
       "exercises": [
-        { "sentence": "わたし＿＿学生です。", "answer": "は", "distractors": ["を", "に", "で"], "translationEn": "I am a student.", "translationRu": "Я студент." },
-        { "sentence": "毎朝 パン＿＿食べます。", "answer": "を", "distractors": ["に", "で", "へ"], "translationEn": "I eat bread every morning.", "translationRu": "Каждое утро я ем хлеб." },
-        { "sentence": "明日 京都＿＿行きます。", "answer": "に", "distractors": ["を", "で", "が"], "translationEn": "Tomorrow I will go to Kyoto.", "translationRu": "Завтра я поеду в Киото." },
-        { "sentence": "図書館＿＿本を読みます。", "answer": "で", "distractors": ["に", "を", "が"], "translationEn": "I read books at the library.", "translationRu": "Я читаю книги в библиотеке." },
-        { "sentence": "友達＿＿映画を見ました。", "answer": "と", "distractors": ["を", "に", "へ"], "translationEn": "I watched a film with a friend.", "translationRu": "Я посмотрел фильм с другом." },
-        { "sentence": "机の上に 本＿＿あります。", "answer": "が", "distractors": ["を", "で", "へ"], "translationEn": "There is a book on the desk.", "translationRu": "На столе лежит книга." },
-        { "sentence": "バス＿＿会社へ行きます。", "answer": "で", "distractors": ["を", "に", "へ"], "translationEn": "I go to the office by bus.", "translationRu": "Я езжу на работу на автобусе." },
-        { "sentence": "7時＿＿起きます。", "answer": "に", "distractors": ["で", "を", "が"], "translationEn": "I get up at 7 o'clock.", "translationRu": "Я встаю в 7 часов." },
-        { "sentence": "わたしは 日本料理＿＿好きです。", "answer": "が", "distractors": ["へ", "に", "で"], "translationEn": "I like Japanese food.", "translationRu": "Мне нравится японская кухня." }
+        { "sentence": "わたし＿＿学生です。", "answer": "は", "distractors": ["を", "に", "で"], "readings": {"学生": "がくせい"}, "translationEn": "I am a student.", "translationRu": "Я студент." },
+        { "sentence": "毎朝 パン＿＿食べます。", "answer": "を", "distractors": ["に", "で", "へ"], "readings": {"毎朝": "まいあさ", "食": "た"}, "translationEn": "I eat bread every morning.", "translationRu": "Каждое утро я ем хлеб." },
+        { "sentence": "明日 京都＿＿行きます。", "answer": "に", "distractors": ["を", "で", "が"], "readings": {"明日": "あした", "京都": "きょうと", "行": "い"}, "translationEn": "Tomorrow I will go to Kyoto.", "translationRu": "Завтра я поеду в Киото." },
+        { "sentence": "図書館＿＿本を読みます。", "answer": "で", "distractors": ["に", "を", "が"], "readings": {"図書館": "としょかん", "本": "ほん", "読": "よ"}, "translationEn": "I read books at the library.", "translationRu": "Я читаю книги в библиотеке." },
+        { "sentence": "友達＿＿映画を見ました。", "answer": "と", "distractors": ["を", "に", "へ"], "readings": {"友達": "ともだち", "映画": "えいが", "見": "み"}, "translationEn": "I watched a film with a friend.", "translationRu": "Я посмотрел фильм с другом." },
+        { "sentence": "机の上に 本＿＿あります。", "answer": "が", "distractors": ["を", "で", "へ"], "readings": {"机": "つくえ", "上": "うえ", "本": "ほん"}, "translationEn": "There is a book on the desk.", "translationRu": "На столе лежит книга." },
+        { "sentence": "バス＿＿会社へ行きます。", "answer": "で", "distractors": ["を", "に", "へ"], "readings": {"会社": "かいしゃ", "行": "い"}, "translationEn": "I go to the office by bus.", "translationRu": "Я езжу на работу на автобусе." },
+        { "sentence": "7時＿＿起きます。", "answer": "に", "distractors": ["で", "を", "が"], "readings": {"時": "じ", "起": "お"}, "translationEn": "I get up at 7 o'clock.", "translationRu": "Я встаю в 7 часов." },
+        { "sentence": "わたしは 日本料理＿＿好きです。", "answer": "が", "distractors": ["へ", "に", "で"], "readings": {"日本料理": "にほんりょうり", "好": "す"}, "translationEn": "I like Japanese food.", "translationRu": "Мне нравится японская кухня." }
       ]
     },
     {
@@ -29,14 +29,14 @@
       "ruleEn": "Use the て-form: 〜てください asks someone to do something, 〜ています describes an action in progress (or a state), 〜てもいいです gives or asks for permission.",
       "ruleRu": "Используйте て-форму: 〜てください — вежливая просьба, 〜ています — действие в процессе (или состояние), 〜てもいいです — разрешение («можно»).",
       "exercises": [
-        { "sentence": "ここに 名前を＿＿ください。", "answer": "書いて", "distractors": ["書き", "書く", "書いた"], "translationEn": "Please write your name here.", "translationRu": "Пожалуйста, напишите здесь своё имя." },
-        { "sentence": "今 雨が＿＿います。", "answer": "降って", "distractors": ["降り", "降る", "降った"], "translationEn": "It is raining now.", "translationRu": "Сейчас идёт дождь." },
-        { "sentence": "写真を＿＿もいいですか。", "answer": "撮って", "distractors": ["撮り", "撮る", "撮った"], "translationEn": "May I take a photo?", "translationRu": "Можно сфотографировать?" },
-        { "sentence": "ちょっと＿＿ください。", "answer": "待って", "distractors": ["待ち", "待つ", "待った"], "translationEn": "Please wait a moment.", "translationRu": "Подождите, пожалуйста, минутку." },
-        { "sentence": "田中さんは 今 電話を＿＿います。", "answer": "かけて", "distractors": ["かけ", "かける", "かけた"], "translationEn": "Mr Tanaka is on the phone now.", "translationRu": "Танака-сан сейчас разговаривает по телефону." },
-        { "sentence": "この部屋で たばこを＿＿もいいです。", "answer": "吸って", "distractors": ["吸い", "吸う", "吸った"], "translationEn": "You may smoke in this room.", "translationRu": "В этой комнате можно курить." },
-        { "sentence": "もう一度 ＿＿ください。", "answer": "言って", "distractors": ["言い", "言う", "言った"], "translationEn": "Please say it once more.", "translationRu": "Скажите, пожалуйста, ещё раз." },
-        { "sentence": "子どもたちは 公園で＿＿います。", "answer": "遊んで", "distractors": ["遊び", "遊ぶ", "遊んだ"], "translationEn": "The children are playing in the park.", "translationRu": "Дети играют в парке." }
+        { "sentence": "ここに 名前を＿＿ください。", "answer": "書いて", "distractors": ["書き", "書く", "書いた"], "readings": {"名前": "なまえ", "書": "か"}, "translationEn": "Please write your name here.", "translationRu": "Пожалуйста, напишите здесь своё имя." },
+        { "sentence": "今 雨が＿＿います。", "answer": "降って", "distractors": ["降り", "降る", "降った"], "readings": {"今": "いま", "雨": "あめ", "降": "ふ"}, "translationEn": "It is raining now.", "translationRu": "Сейчас идёт дождь." },
+        { "sentence": "写真を＿＿もいいですか。", "answer": "撮って", "distractors": ["撮り", "撮る", "撮った"], "readings": {"写真": "しゃしん", "撮": "と"}, "translationEn": "May I take a photo?", "translationRu": "Можно сфотографировать?" },
+        { "sentence": "ちょっと＿＿ください。", "answer": "待って", "distractors": ["待ち", "待つ", "待った"], "readings": {"待": "ま"}, "translationEn": "Please wait a moment.", "translationRu": "Подождите, пожалуйста, минутку." },
+        { "sentence": "田中さんは 今 電話を＿＿います。", "answer": "かけて", "distractors": ["かけ", "かける", "かけた"], "readings": {"田中": "たなか", "今": "いま", "電話": "でんわ"}, "translationEn": "Mr Tanaka is on the phone now.", "translationRu": "Танака-сан сейчас разговаривает по телефону." },
+        { "sentence": "この部屋で たばこを＿＿もいいです。", "answer": "吸って", "distractors": ["吸い", "吸う", "吸った"], "readings": {"部屋": "へや", "吸": "す"}, "translationEn": "You may smoke in this room.", "translationRu": "В этой комнате можно курить." },
+        { "sentence": "もう一度 ＿＿ください。", "answer": "言って", "distractors": ["言い", "言う", "言った"], "readings": {"一度": "いちど", "言": "い"}, "translationEn": "Please say it once more.", "translationRu": "Скажите, пожалуйста, ещё раз." },
+        { "sentence": "子どもたちは 公園で＿＿います。", "answer": "遊んで", "distractors": ["遊び", "遊ぶ", "遊んだ"], "readings": {"子": "こ", "公園": "こうえん", "遊": "あそ"}, "translationEn": "The children are playing in the park.", "translationRu": "Дети играют в парке." }
       ]
     },
     {
@@ -48,12 +48,12 @@
       "ruleEn": "た-form + ことがあります talks about past experience: 'I have done it (at least once)'. The negative 〜たことがありません means 'I have never done it'.",
       "ruleRu": "た-форма + ことがあります — опыт в прошлом: «мне доводилось…». Отрицание 〜たことがありません — «никогда не…».",
       "exercises": [
-        { "sentence": "富士山に＿＿ことがあります。", "answer": "登った", "distractors": ["登って", "登ります", "登ろう"], "translationEn": "I have climbed Mt Fuji.", "translationRu": "Я поднимался на Фудзи." },
-        { "sentence": "着物を＿＿ことがありません。", "answer": "着た", "distractors": ["着て", "着ます", "着よう"], "translationEn": "I have never worn a kimono.", "translationRu": "Я никогда не надевала кимоно." },
-        { "sentence": "北海道へ＿＿ことがありますか。", "answer": "行った", "distractors": ["行って", "行きます", "行こう"], "translationEn": "Have you ever been to Hokkaido?", "translationRu": "Вы когда-нибудь были на Хоккайдо?" },
-        { "sentence": "馬に＿＿ことがあります。", "answer": "乗った", "distractors": ["乗って", "乗ります", "乗ろう"], "translationEn": "I have ridden a horse.", "translationRu": "Мне доводилось ездить на лошади." },
-        { "sentence": "日本の映画を＿＿ことがありますか。", "answer": "見た", "distractors": ["見て", "見ます", "見よう"], "translationEn": "Have you ever seen a Japanese film?", "translationRu": "Вы когда-нибудь смотрели японский фильм?" },
-        { "sentence": "納豆を＿＿ことがありますか。", "answer": "食べた", "distractors": ["食べて", "食べます", "食べよう"], "translationEn": "Have you ever eaten natto?", "translationRu": "Вы когда-нибудь пробовали натто?" }
+        { "sentence": "富士山に＿＿ことがあります。", "answer": "登った", "distractors": ["登って", "登ります", "登ろう"], "readings": {"富士山": "ふじさん", "登": "のぼ"}, "translationEn": "I have climbed Mt Fuji.", "translationRu": "Я поднимался на Фудзи." },
+        { "sentence": "着物を＿＿ことがありません。", "answer": "着た", "distractors": ["着て", "着ます", "着よう"], "readings": {"着物": "きもの", "着": "き"}, "translationEn": "I have never worn a kimono.", "translationRu": "Я никогда не надевала кимоно." },
+        { "sentence": "北海道へ＿＿ことがありますか。", "answer": "行った", "distractors": ["行って", "行きます", "行こう"], "readings": {"北海道": "ほっかいどう", "行": "い"}, "translationEn": "Have you ever been to Hokkaido?", "translationRu": "Вы когда-нибудь были на Хоккайдо?" },
+        { "sentence": "馬に＿＿ことがあります。", "answer": "乗った", "distractors": ["乗って", "乗ります", "乗ろう"], "readings": {"馬": "うま", "乗": "の"}, "translationEn": "I have ridden a horse.", "translationRu": "Мне доводилось ездить на лошади." },
+        { "sentence": "日本の映画を＿＿ことがありますか。", "answer": "見た", "distractors": ["見て", "見ます", "見よう"], "readings": {"日本": "にほん", "映画": "えいが", "見": "み"}, "translationEn": "Have you ever seen a Japanese film?", "translationRu": "Вы когда-нибудь смотрели японский фильм?" },
+        { "sentence": "納豆を＿＿ことがありますか。", "answer": "食べた", "distractors": ["食べて", "食べます", "食べよう"], "readings": {"納豆": "なっとう", "食": "た"}, "translationEn": "Have you ever eaten natto?", "translationRu": "Вы когда-нибудь пробовали натто?" }
       ]
     },
     {
@@ -65,13 +65,13 @@
       "ruleEn": "〜とおりに means 'exactly as': V (dictionary form or た-form) + とおりに, or Nの + とおりに (言うとおりに, 言ったとおりに, 説明書のとおりに). 〜たあとで means 'after doing': always the た-form (or Nの + あとで).",
       "ruleRu": "〜とおりに — «точно так, как»: V (словарная форма или た-форма) + とおりに или Nの + とおりに (言うとおりに, 言ったとおりに, 説明書のとおりに). 〜たあとで — «после того как»: всегда た-форма (или Nの + あとで).",
       "exercises": [
-        { "sentence": "説明書の＿＿に 組み立ててください。", "answer": "とおり", "distractors": ["あと", "ながら", "あいだ"], "translationEn": "Please assemble it as the manual says.", "translationRu": "Соберите, пожалуйста, как написано в инструкции." },
-        { "sentence": "先生が＿＿とおりに、発音してください。", "answer": "言った", "distractors": ["言って", "言い", "言わ"], "translationEn": "Please pronounce it the way the teacher said.", "translationRu": "Произнесите так, как сказал учитель." },
-        { "sentence": "仕事が＿＿あとで、飲みに行きませんか。", "answer": "終わった", "distractors": ["終わる", "終わって", "終わり"], "translationEn": "Shall we go for a drink after work?", "translationRu": "Не сходить ли нам выпить после работы?" },
-        { "sentence": "食事の＿＿で、薬を飲んでください。", "answer": "あと", "distractors": ["とおり", "ため", "ながら"], "translationEn": "Please take the medicine after meals.", "translationRu": "Принимайте лекарство после еды." },
-        { "sentence": "地図の＿＿に 行ったら、すぐ駅に着きました。", "answer": "とおり", "distractors": ["あと", "ながら", "あいだ"], "translationEn": "I followed the map and got to the station right away.", "translationRu": "Я пошёл по карте и сразу вышел к станции." },
-        { "sentence": "シャワーを＿＿あとで、寝ます。", "answer": "浴びた", "distractors": ["浴びる", "浴びて", "浴び"], "translationEn": "I go to bed after taking a shower.", "translationRu": "Я ложусь спать после душа." },
-        { "sentence": "宿題を＿＿あとで、テレビを見ます。", "answer": "した", "distractors": ["する", "して", "し"], "translationEn": "I'll watch TV after doing my homework.", "translationRu": "Я посмотрю телевизор после того, как сделаю домашнее задание." }
+        { "sentence": "説明書の＿＿に 組み立ててください。", "answer": "とおり", "distractors": ["あと", "ながら", "あいだ"], "readings": {"説明書": "せつめいしょ", "組": "く", "立": "た"}, "translationEn": "Please assemble it as the manual says.", "translationRu": "Соберите, пожалуйста, как написано в инструкции." },
+        { "sentence": "先生が＿＿とおりに、発音してください。", "answer": "言った", "distractors": ["言って", "言い", "言わ"], "readings": {"先生": "せんせい", "発音": "はつおん", "言": "い"}, "translationEn": "Please pronounce it the way the teacher said.", "translationRu": "Произнесите так, как сказал учитель." },
+        { "sentence": "仕事が＿＿あとで、飲みに行きませんか。", "answer": "終わった", "distractors": ["終わる", "終わって", "終わり"], "readings": {"仕事": "しごと", "飲": "の", "行": "い", "終": "お"}, "translationEn": "Shall we go for a drink after work?", "translationRu": "Не сходить ли нам выпить после работы?" },
+        { "sentence": "食事の＿＿で、薬を飲んでください。", "answer": "あと", "distractors": ["とおり", "ため", "ながら"], "readings": {"食事": "しょくじ", "薬": "くすり", "飲": "の"}, "translationEn": "Please take the medicine after meals.", "translationRu": "Принимайте лекарство после еды." },
+        { "sentence": "地図の＿＿に 行ったら、すぐ駅に着きました。", "answer": "とおり", "distractors": ["あと", "ながら", "あいだ"], "readings": {"地図": "ちず", "行": "い", "駅": "えき", "着": "つ"}, "translationEn": "I followed the map and got to the station right away.", "translationRu": "Я пошёл по карте и сразу вышел к станции." },
+        { "sentence": "シャワーを＿＿あとで、寝ます。", "answer": "浴びた", "distractors": ["浴びる", "浴びて", "浴び"], "readings": {"寝": "ね", "浴": "あ"}, "translationEn": "I go to bed after taking a shower.", "translationRu": "Я ложусь спать после душа." },
+        { "sentence": "宿題を＿＿あとで、テレビを見ます。", "answer": "した", "distractors": ["する", "して", "し"], "readings": {"宿題": "しゅくだい", "見": "み"}, "translationEn": "I'll watch TV after doing my homework.", "translationRu": "Я посмотрю телевизор после того, как сделаю домашнее задание." }
       ]
     },
     {
@@ -83,13 +83,13 @@
       "ruleEn": "〜ば means 'if'. Verbs change the final -u to -eba (押す→押せば, ある→あれば); い-adjectives change 〜い to 〜ければ (安い→安ければ, いい→よければ). N or a plain-form verb + なら means 'if it's about N / if you are going to V' and picks up the other person's topic to give advice.",
       "ruleRu": "〜ば — «если». У глаголов конечное -u меняется на -eba (押す→押せば, ある→あれば); у い-прилагательных 〜い → 〜ければ (安い→安ければ, いい→よければ). N или глагол в простой форме + なら — «если речь о N / если собираетесь V»: подхватывает тему собеседника, чтобы дать совет.",
       "exercises": [
-        { "sentence": "雨が＿＿、試合は中止です。", "answer": "降れば", "distractors": ["降るば", "降りば", "降れ"], "translationEn": "If it rains, the match will be cancelled.", "translationRu": "Если пойдёт дождь, матч отменят." },
-        { "sentence": "もう少し＿＿、買います。", "answer": "安ければ", "distractors": ["安いば", "安くば", "安かれば"], "translationEn": "If it's a bit cheaper, I'll buy it.", "translationRu": "Если будет чуть дешевле, куплю." },
-        { "sentence": "このボタンを＿＿、ドアが開きます。", "answer": "押せば", "distractors": ["押すば", "押しば", "押さば"], "translationEn": "If you press this button, the door opens.", "translationRu": "Если нажать эту кнопку, дверь откроется." },
-        { "sentence": "時間が＿＿、手伝います。", "answer": "あれば", "distractors": ["あるば", "ありば", "あれ"], "translationEn": "If I have time, I'll help.", "translationRu": "Если будет время, я помогу." },
-        { "sentence": "天気が＿＿、山に登りましょう。", "answer": "よければ", "distractors": ["いいば", "よいば", "いければ"], "translationEn": "If the weather is good, let's climb the mountain.", "translationRu": "Если будет хорошая погода, поднимемся в горы." },
-        { "sentence": "パソコン＿＿、秋葉原がいいですよ。", "answer": "なら", "distractors": ["が", "を", "ば"], "translationEn": "If it's a computer you want, Akihabara is good.", "translationRu": "Если вам нужен компьютер, то лучше в Акихабару." },
-        { "sentence": "温泉に入る＿＿、箱根がいいですよ。", "answer": "なら", "distractors": ["たら", "を", "ば"], "translationEn": "If you want to go to a hot spring, Hakone is good.", "translationRu": "Если хотите в онсэн, советую Хаконэ." }
+        { "sentence": "雨が＿＿、試合は中止です。", "answer": "降れば", "distractors": ["降るば", "降りば", "降れ"], "readings": {"雨": "あめ", "試合": "しあい", "中止": "ちゅうし", "降": "ふ"}, "translationEn": "If it rains, the match will be cancelled.", "translationRu": "Если пойдёт дождь, матч отменят." },
+        { "sentence": "もう少し＿＿、買います。", "answer": "安ければ", "distractors": ["安いば", "安くば", "安かれば"], "readings": {"少": "すこ", "買": "か", "安": "やす"}, "translationEn": "If it's a bit cheaper, I'll buy it.", "translationRu": "Если будет чуть дешевле, куплю." },
+        { "sentence": "このボタンを＿＿、ドアが開きます。", "answer": "押せば", "distractors": ["押すば", "押しば", "押さば"], "readings": {"開": "あ", "押": "お"}, "translationEn": "If you press this button, the door opens.", "translationRu": "Если нажать эту кнопку, дверь откроется." },
+        { "sentence": "時間が＿＿、手伝います。", "answer": "あれば", "distractors": ["あるば", "ありば", "あれ"], "readings": {"時間": "じかん", "手伝": "てつだ"}, "translationEn": "If I have time, I'll help.", "translationRu": "Если будет время, я помогу." },
+        { "sentence": "天気が＿＿、山に登りましょう。", "answer": "よければ", "distractors": ["いいば", "よいば", "いければ"], "readings": {"天気": "てんき", "山": "やま", "登": "のぼ"}, "translationEn": "If the weather is good, let's climb the mountain.", "translationRu": "Если будет хорошая погода, поднимемся в горы." },
+        { "sentence": "パソコン＿＿、秋葉原がいいですよ。", "answer": "なら", "distractors": ["が", "を", "ば"], "readings": {"秋葉原": "あきはばら"}, "translationEn": "If it's a computer you want, Akihabara is good.", "translationRu": "Если вам нужен компьютер, то лучше в Акихабару." },
+        { "sentence": "温泉に入る＿＿、箱根がいいですよ。", "answer": "なら", "distractors": ["たら", "を", "ば"], "readings": {"温泉": "おんせん", "入": "はい", "箱根": "はこね"}, "translationEn": "If you want to go to a hot spring, Hakone is good.", "translationRu": "Если хотите в онсэн, советую Хаконэ." }
       ]
     },
     {
@@ -101,15 +101,15 @@
       "ruleEn": "Plain non-past or ない-form (often potential) + ように means 'so that…'. 〜ようになります means 'come to (be able to) do', a change. 〜ようにします / 〜ようにしています means 'make an effort / make a habit of doing'.",
       "ruleRu": "Простая форма настоящего времени или ない-форма (часто потенциальная) + ように — «чтобы…». 〜ようになります — «стать способным / начать делать» (изменение). 〜ようにします / 〜ようにしています — «стараться / взять за привычку».",
       "exercises": [
-        { "sentence": "日本語が＿＿ように、毎日練習しています。", "answer": "上手になる", "distractors": ["上手になった", "上手になって", "上手になろう"], "translationEn": "I practise every day so that I get good at Japanese.", "translationRu": "Я тренируюсь каждый день, чтобы хорошо знать японский." },
-        { "sentence": "かぜを＿＿ように、気をつけてください。", "answer": "ひかない", "distractors": ["ひいた", "ひいて", "ひこう"], "translationEn": "Be careful not to catch a cold.", "translationRu": "Берегитесь, чтобы не простудиться." },
-        { "sentence": "毎日 練習して、泳げる＿＿なりました。", "answer": "ように", "distractors": ["ために", "ながら", "そうに"], "translationEn": "After practising every day, I became able to swim.", "translationRu": "Тренируясь каждый день, я научилась плавать." },
-        { "sentence": "最近 野菜を＿＿ようにしています。", "answer": "食べる", "distractors": ["食べた", "食べて", "食べよう"], "translationEn": "Recently I make a point of eating vegetables.", "translationRu": "В последнее время я стараюсь есть овощи." },
-        { "sentence": "日本に来て、さしみが＿＿ようになりました。", "answer": "食べられる", "distractors": ["食べられた", "食べられて", "食べられよう"], "translationEn": "Since coming to Japan, I have become able to eat sashimi.", "translationRu": "Приехав в Японию, я научилась есть сасими." },
-        { "sentence": "遅刻しない＿＿、早く家を出ます。", "answer": "ように", "distractors": ["ようと", "ことに", "ながら"], "translationEn": "I leave home early so as not to be late.", "translationRu": "Я выхожу из дома пораньше, чтобы не опоздать." },
-        { "sentence": "夜は 甘いものを食べない＿＿しています。", "answer": "ように", "distractors": ["ことを", "ために", "ばかり"], "translationEn": "I try not to eat sweets at night.", "translationRu": "Я стараюсь не есть сладкое по вечерам." },
-        { "sentence": "子どもが＿＿ように、字を大きく書きました。", "answer": "読める", "distractors": ["読めた", "読めて", "読もう"], "translationEn": "I wrote the letters large so that the children could read them.", "translationRu": "Я написала крупно, чтобы дети могли прочитать." },
-        { "sentence": "やっと 漢字が少し＿＿ようになりました。", "answer": "書ける", "distractors": ["書けた", "書けて", "書こう"], "translationEn": "At last I can write a little kanji.", "translationRu": "Наконец-то я немного научилась писать кандзи." }
+        { "sentence": "日本語が＿＿ように、毎日練習しています。", "answer": "上手になる", "distractors": ["上手になった", "上手になって", "上手になろう"], "readings": {"日本語": "にほんご", "毎日": "まいにち", "練習": "れんしゅう", "上手": "じょうず"}, "translationEn": "I practise every day so that I get good at Japanese.", "translationRu": "Я тренируюсь каждый день, чтобы хорошо знать японский." },
+        { "sentence": "かぜを＿＿ように、気をつけてください。", "answer": "ひかない", "distractors": ["ひいた", "ひいて", "ひこう"], "readings": {"気": "き"}, "translationEn": "Be careful not to catch a cold.", "translationRu": "Берегитесь, чтобы не простудиться." },
+        { "sentence": "毎日 練習して、泳げる＿＿なりました。", "answer": "ように", "distractors": ["ために", "ながら", "そうに"], "readings": {"毎日": "まいにち", "練習": "れんしゅう", "泳": "およ"}, "translationEn": "After practising every day, I became able to swim.", "translationRu": "Тренируясь каждый день, я научилась плавать." },
+        { "sentence": "最近 野菜を＿＿ようにしています。", "answer": "食べる", "distractors": ["食べた", "食べて", "食べよう"], "readings": {"最近": "さいきん", "野菜": "やさい", "食": "た"}, "translationEn": "Recently I make a point of eating vegetables.", "translationRu": "В последнее время я стараюсь есть овощи." },
+        { "sentence": "日本に来て、さしみが＿＿ようになりました。", "answer": "食べられる", "distractors": ["食べられた", "食べられて", "食べられよう"], "readings": {"日本": "にほん", "来": "き", "食": "た"}, "translationEn": "Since coming to Japan, I have become able to eat sashimi.", "translationRu": "Приехав в Японию, я научилась есть сасими." },
+        { "sentence": "遅刻しない＿＿、早く家を出ます。", "answer": "ように", "distractors": ["ようと", "ことに", "ながら"], "readings": {"遅刻": "ちこく", "早": "はや", "家": "いえ", "出": "で"}, "translationEn": "I leave home early so as not to be late.", "translationRu": "Я выхожу из дома пораньше, чтобы не опоздать." },
+        { "sentence": "夜は 甘いものを食べない＿＿しています。", "answer": "ように", "distractors": ["ことを", "ために", "ばかり"], "readings": {"夜": "よる", "甘": "あま", "食": "た"}, "translationEn": "I try not to eat sweets at night.", "translationRu": "Я стараюсь не есть сладкое по вечерам." },
+        { "sentence": "子どもが＿＿ように、字を大きく書きました。", "answer": "読める", "distractors": ["読めた", "読めて", "読もう"], "readings": {"子": "こ", "字": "じ", "大": "おお", "書": "か", "読": "よ"}, "translationEn": "I wrote the letters large so that the children could read them.", "translationRu": "Я написала крупно, чтобы дети могли прочитать." },
+        { "sentence": "やっと 漢字が少し＿＿ようになりました。", "answer": "書ける", "distractors": ["書けた", "書けて", "書こう"], "readings": {"漢字": "かんじ", "少": "すこ", "書": "か"}, "translationEn": "At last I can write a little kanji.", "translationRu": "Наконец-то я немного научилась писать кандзи." }
       ]
     },
     {
@@ -121,13 +121,13 @@
       "ruleEn": "Passive: group 1 -u → -aremasu (踏む→踏まれます; う → わ: 歌う→歌われます), group 2 -ru → -raremasu (建てる→建てられます), する→されます, 来る→こられます. The doer takes に. The passive also expresses being bothered by someone's action (足を踏まれました).",
       "ruleRu": "Пассив: группа 1 -u → -aremasu (踏む→踏まれます; う → わ: 歌う→歌われます), группа 2 -ru → -raremasu (建てる→建てられます), する→されます, 来る→こられます. Деятель обозначается に. Пассив также передаёт неприятное воздействие (足を踏まれました — «мне наступили на ногу»).",
       "exercises": [
-        { "sentence": "わたしは 先生に＿＿。", "answer": "ほめられました", "distractors": ["ほめました", "ほめまれました", "ほめましょう"], "translationEn": "I was praised by the teacher.", "translationRu": "Меня похвалил учитель." },
-        { "sentence": "電車の中で 隣の人に足を＿＿。", "answer": "踏まれました", "distractors": ["踏みました", "踏んでいました", "踏みたいです"], "translationEn": "On the train, the person next to me stepped on my foot.", "translationRu": "В поезде сосед наступил мне на ногу." },
-        { "sentence": "このお寺は 800年前に＿＿。", "answer": "建てられました", "distractors": ["建てられます", "建ちられました", "建てています"], "translationEn": "This temple was built 800 years ago.", "translationRu": "Этот храм был построен 800 лет назад." },
-        { "sentence": "弟に ケーキを＿＿。", "answer": "食べられました", "distractors": ["食べました", "食べています", "食べたいです"], "translationEn": "My little brother ate my cake (to my annoyance).", "translationRu": "Младший брат съел мой торт (к моей досаде)." },
-        { "sentence": "この歌は 世界中で＿＿います。", "answer": "歌われて", "distractors": ["歌われ", "歌われる", "歌いられて"], "translationEn": "This song is sung all over the world.", "translationRu": "Эту песню поют по всему миру." },
-        { "sentence": "わたしは 母に 日記を＿＿。", "answer": "読まれました", "distractors": ["読まりました", "読められました", "読みられました"], "translationEn": "My mother read my diary.", "translationRu": "Мама прочитала мой дневник." },
-        { "sentence": "オリンピックは 4年に一度＿＿。", "answer": "開かれます", "distractors": ["開かります", "開きられます", "開かれよう"], "translationEn": "The Olympics are held once every four years.", "translationRu": "Олимпиада проводится раз в четыре года." }
+        { "sentence": "わたしは 先生に＿＿。", "answer": "ほめられました", "distractors": ["ほめました", "ほめまれました", "ほめましょう"], "readings": {"先生": "せんせい"}, "translationEn": "I was praised by the teacher.", "translationRu": "Меня похвалил учитель." },
+        { "sentence": "電車の中で 隣の人に足を＿＿。", "answer": "踏まれました", "distractors": ["踏みました", "踏んでいました", "踏みたいです"], "readings": {"電車": "でんしゃ", "中": "なか", "隣": "となり", "人": "ひと", "足": "あし", "踏": "ふ"}, "translationEn": "On the train, the person next to me stepped on my foot.", "translationRu": "В поезде сосед наступил мне на ногу." },
+        { "sentence": "このお寺は 800年前に＿＿。", "answer": "建てられました", "distractors": ["建てられます", "建ちられました", "建てています"], "readings": {"寺": "てら", "年前": "ねんまえ", "建": "た"}, "translationEn": "This temple was built 800 years ago.", "translationRu": "Этот храм был построен 800 лет назад." },
+        { "sentence": "弟に ケーキを＿＿。", "answer": "食べられました", "distractors": ["食べました", "食べています", "食べたいです"], "readings": {"弟": "おとうと", "食": "た"}, "translationEn": "My little brother ate my cake (to my annoyance).", "translationRu": "Младший брат съел мой торт (к моей досаде)." },
+        { "sentence": "この歌は 世界中で＿＿います。", "answer": "歌われて", "distractors": ["歌われ", "歌われる", "歌いられて"], "readings": {"歌": "うた", "世界中": "せかいじゅう"}, "translationEn": "This song is sung all over the world.", "translationRu": "Эту песню поют по всему миру." },
+        { "sentence": "わたしは 母に 日記を＿＿。", "answer": "読まれました", "distractors": ["読まりました", "読められました", "読みられました"], "readings": {"母": "はは", "日記": "にっき", "読": "よ"}, "translationEn": "My mother read my diary.", "translationRu": "Мама прочитала мой дневник." },
+        { "sentence": "オリンピックは 4年に一度＿＿。", "answer": "開かれます", "distractors": ["開かります", "開きられます", "開かれよう"], "readings": {"年": "ねん", "一度": "いちど", "開": "ひら"}, "translationEn": "The Olympics are held once every four years.", "translationRu": "Олимпиада проводится раз в четыре года." }
       ]
     }
   ]

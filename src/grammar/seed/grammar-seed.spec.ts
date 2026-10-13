@@ -8,10 +8,16 @@ import {
   validateGrammarSeed,
 } from './grammar-seed';
 
-const exercise = (sentence: string, answer = 'は', distractors = ['を', 'に', 'で']) => ({
+const exercise = (
+  sentence: string,
+  answer = 'は',
+  distractors = ['を', 'に', 'で'],
+  readings: Record<string, string> = {},
+) => ({
   sentence,
   answer,
   distractors,
+  readings,
   translationEn: 'en',
   translationRu: 'ru',
 });
@@ -54,6 +60,27 @@ describe('validateGrammarSeed', () => {
         'p1: duplicate code',
       ]),
     );
+  });
+
+  it('requires a kana reading for every kanji in the sentence and options', () => {
+    const errors = validateGrammarSeed([
+      point({
+        exercises: [
+          exercise('学生＿＿です。', 'は', ['を', 'に', 'で'], { 学生: 'がくせい' }),
+          exercise('先生＿＿です。'),
+          exercise('あ＿＿。', '書いて', ['書き', '書く', '書いた'], {}),
+          exercise('い＿＿。', 'は', ['を', 'に', 'で'], { 本: 'ほん' }),
+          exercise('本＿＿。', 'は', ['を', 'に', 'で'], { 本: 'hon' }),
+        ],
+      }),
+    ]);
+    expect(errors).toEqual([
+      'p1#2: missing reading for 先',
+      'p1#2: missing reading for 生',
+      'p1#3: missing reading for 書',
+      'p1#4: unused reading for 本',
+      'p1#5: reading for 本 must be kana',
+    ]);
   });
 
   it('requires enough exercises and a sane lesson range', () => {

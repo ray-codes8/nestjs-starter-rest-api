@@ -54,6 +54,13 @@ export class GrammarQuestionOutput {
   @ApiProperty({ type: LocalizedTextOutput })
   translation: LocalizedTextOutput;
 
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: { type: 'string' },
+    description: 'Furigana for the sentence and options: word or kanji → kana',
+  })
+  readings: Record<string, string>;
+
   @ApiProperty({ type: [String] })
   options: string[];
 }

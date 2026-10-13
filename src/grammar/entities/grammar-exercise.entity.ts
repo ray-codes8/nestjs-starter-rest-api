@@ -24,6 +24,10 @@ export class GrammarExercise {
   @Column({ type: 'jsonb' })
   distractors: string[];
 
+  // Furigana for the sentence and its options: word or kanji → kana.
+  @Column({ type: 'jsonb', default: {} })
+  readings: Record<string, string>;
+
   @Column({ length: 255 })
   translationEn: string;
 
