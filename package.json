@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
     "@nestjs/common": "^11.1.19",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.19",
@@ -67,7 +68,8 @@
     "typeorm": "^0.3.28",
     "uuid": "^10.0.0",
     "wanakana": "^5.3.1",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
