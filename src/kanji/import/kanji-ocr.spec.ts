@@ -4,6 +4,7 @@ import {
   mergeCards,
   normalizeCard,
   parseOcrPage,
+  readPageResult,
   validateKanjiCards,
 } from './kanji-ocr';
 
@@ -116,5 +117,23 @@ describe('mergeCards', () => {
     const merged = mergeCards(existing, reread, [54]);
     expect(merged.map((c) => c.number)).toEqual([1, 47, 48, 50]);
     expect(merged.find((c) => c.number === 47)?.meaningEn).toBe('friend');
+  });
+});
+
+describe('readPageResult', () => {
+  const ok = { cards: [] as KanjiCardOcr[] };
+  const message = (stop_reason: string, text: string) => ({
+    stop_reason,
+    content: [{ type: 'thinking', thinking: '' }, { type: 'text', text }],
+  });
+
+  it('returns the cards of a finished page', () => {
+    expect(readPageResult({ custom_id: 'page-054', result: { type: 'succeeded', message: message('end_turn', JSON.stringify(ok)) } })).toEqual({ page: 54, cards: [] });
+  });
+
+  it('reports failed, truncated and unparsable pages without cards', () => {
+    expect(readPageResult({ custom_id: 'page-054', result: { type: 'errored' } })).toEqual({ page: 54, cards: null, problem: 'page-054: errored' });
+    expect(readPageResult({ custom_id: 'page-054', result: { type: 'succeeded', message: message('max_tokens', '{') } })).toEqual({ page: 54, cards: null, problem: 'page-054: stopped by max_tokens' });
+    expect(readPageResult({ custom_id: 'page-054', result: { type: 'succeeded', message: message('end_turn', 'oops') } })).toEqual({ page: 54, cards: null, problem: 'page-054: unparsable result' });
   });
 });

@@ -11,7 +11,7 @@ import {
   KanjiCardOcr,
   mergeCards,
   normalizeCard,
-  parseOcrPage,
+  readPageResult,
   validateKanjiCards,
 } from './kanji/import/kanji-ocr';
 import { KanjiData, loadKanjiFile } from './kanji/seed/kanji-seed';
@@ -73,7 +73,7 @@ async function submit(client: Anthropic) {
 }
 
 async function collect(client: Anthropic) {
-  const file = JSON.parse(fs.readFileSync(BATCH_FILE, 'utf8')) as { batchId: string; pages: number[]; collected: boolean };
+  const file = JSON.parse(fs.readFileSync(BATCH_FILE, 'utf8')) as { batchId: string; collected: boolean };
   const batch = await client.messages.batches.retrieve(file.batchId);
   if (batch.processing_status !== 'ended') {
     console.log(`batch ${batch.id}: ${batch.processing_status}`, batch.request_counts);
@@ -82,19 +82,15 @@ async function collect(client: Anthropic) {
 
   const problems: string[] = [];
   const cards: (KanjiCardOcr & { page: number })[] = [];
+  const okPages: number[] = [];
   for await (const entry of await client.messages.batches.results(file.batchId)) {
-    const page = Number(entry.custom_id.replace('page-', ''));
-    if (entry.result.type !== 'succeeded' || entry.result.message.stop_reason !== 'end_turn') {
-      problems.push(`${entry.custom_id}: ${entry.result.type}`);
+    const { page, cards: pageCards, problem } = readPageResult(entry);
+    if (!pageCards) {
+      problems.push(problem!);
       continue;
     }
-    const text = entry.result.message.content.find((b) => b.type === 'text');
-    const parsed = text && text.type === 'text' ? parseOcrPage(text.text) : null;
-    if (!parsed) {
-      problems.push(`${entry.custom_id}: unparsable result`);
-      continue;
-    }
-    parsed.cards.forEach((card) => cards.push({ ...normalizeCard(card), page }));
+    okPages.push(page);
+    pageCards.forEach((card) => cards.push({ ...normalizeCard(card), page }));
   }
 
   const inRange = cards.filter((c) => c.number >= 1 && c.number <= 100);
@@ -115,7 +111,8 @@ async function collect(client: Anthropic) {
     data.push({ ...card, picture });
   }
   // Re-reading a few pages keeps every other page's cards.
-  const merged = mergeCards(loadKanjiFile(DIR) ?? [], data, file.pages);
+  // Only pages that were read successfully replace their earlier cards.
+  const merged = mergeCards(loadKanjiFile(DIR) ?? [], data, okPages);
   const numbers = new Set(merged.map((c) => c.number));
   for (let n = 1; n <= 100; n++) {
     if (!numbers.has(n)) problems.push(`#${n}: missing`);

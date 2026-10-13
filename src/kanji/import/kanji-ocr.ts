@@ -124,3 +124,27 @@ export function mergeCards<T extends { number: number; page: number }>(
   const reread = new Set(rereadPages);
   return [...existing.filter((c) => !reread.has(c.page)), ...incoming].sort((a, b) => a.number - b.number);
 }
+
+interface BatchEntry {
+  custom_id: string;
+  result: {
+    type: string;
+    message?: { stop_reason: string | null; content: { type: string; text?: string }[] };
+  };
+}
+
+// One batch entry → its page's cards, or null with the reason when the page must not replace old cards.
+export function readPageResult(entry: BatchEntry): { page: number; cards: KanjiCardOcr[] | null; problem?: string } {
+  const page = Number(entry.custom_id.replace('page-', ''));
+  const fail = (reason: string) => ({ page, cards: null, problem: `${entry.custom_id}: ${reason}` });
+  if (entry.result.type !== 'succeeded' || !entry.result.message) {
+    return fail(entry.result.type);
+  }
+  const { stop_reason, content } = entry.result.message;
+  if (stop_reason !== 'end_turn') {
+    return fail(`stopped by ${stop_reason}`);
+  }
+  const text = content.find((block) => block.type === 'text')?.text;
+  const parsed = text ? parseOcrPage(text) : null;
+  return parsed ? { page, cards: parsed.cards } : fail('unparsable result');
+}
