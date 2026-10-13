@@ -23,6 +23,11 @@ const FORM_NAMES: Record<VerbForm, string> = {
   [VerbForm.Ta]: 'past た-form',
 };
 
+// Keeps the learner's text inside its tag: it cannot close the tag or add markup.
+function escapeMarkup(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 export function buildExplanationPrompt(input: ExplanationPromptInput): string {
   const word = input.kanji ? `${input.kanji} (${input.kana})` : input.kana;
   const lines = [
@@ -36,7 +41,7 @@ export function buildExplanationPrompt(input: ExplanationPromptInput): string {
   }
   lines.push(
     `Correct answer: ${input.correctAnswer}`,
-    `Learner's answer: <learner_answer>${input.chosenAnswer}</learner_answer>`,
+    `Learner's answer: <learner_answer>${escapeMarkup(input.chosenAnswer)}</learner_answer>`,
     `Explain in: ${LANGUAGE_NAMES[input.language]}`,
   );
   return lines.join('\n');

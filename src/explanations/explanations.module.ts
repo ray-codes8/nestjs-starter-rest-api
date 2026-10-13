@@ -20,7 +20,7 @@ import { ExplanationRepository } from './repositories/explanation.repository';
 import { ExplanationService } from './services/explanation.service';
 
 // Without an API key the feature is off: the service answers 503 for uncached mistakes.
-function createExplanationGenerator(
+export function createExplanationGenerator(
   config: ConfigService,
 ): ExplanationGenerator | null {
   const apiKey = config.get<string>('anthropic.apiKey');
@@ -28,7 +28,8 @@ function createExplanationGenerator(
     return null;
   }
   return new ClaudeExplanationGenerator(
-    new Anthropic({ apiKey }),
+    // A stuck call should fail fast and show "unavailable", not spin for minutes.
+    new Anthropic({ apiKey, timeout: 30_000, maxRetries: 1 }),
     config.get<string>('anthropic.model') ?? DEFAULT_EXPLANATION_MODEL,
   );
 }
