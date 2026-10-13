@@ -1,0 +1,87 @@
+import { buildOcrRequest, KanjiCardOcr, normalizeCard, parseOcrPage, validateKanjiCards } from './kanji-ocr';
+
+const card = (number: number, overrides: Partial<KanjiCardOcr> = {}): KanjiCardOcr & { page: number } => ({
+  page: 66,
+  number,
+  kanji: '牛',
+  kun: ['うし'],
+  on: ['ギュウ'],
+  meaningEn: 'cow',
+  meaningRu: 'корова',
+  strokes: 4,
+  originEn: "picture of a cow's head and horns",
+  originRu: 'рисунок головы коровы с рогами',
+  compounds: [{ word: '牛肉', reading: 'ぎゅうにく', meaningEn: 'beef', meaningRu: 'говядина' }],
+  picture: { x0: 0.23, y0: 0.18, x1: 0.53, y1: 0.28 },
+  ...overrides,
+});
+
+describe('buildOcrRequest', () => {
+  it('sends the page image with a JSON-schema output and a page id', () => {
+    const request = buildOcrRequest(66, 'AAAA');
+    expect(request.custom_id).toBe('page-066');
+    expect(request.params.output_config).toEqual(
+      expect.objectContaining({ effort: 'low', format: expect.objectContaining({ type: 'json_schema' }) }),
+    );
+    const content = request.params.messages[0].content as { type: string }[];
+    expect(content[0]).toEqual(expect.objectContaining({ type: 'image' }));
+  });
+});
+
+describe('normalizeCard', () => {
+  it('strips separators and spaces from readings', () => {
+    const normalized = normalizeCard(
+      card(1, { kun: ['う・し', ' うし- '], on: ['ギュウ・'], compounds: [{ word: '水牛', reading: 'すい ぎゅう', meaningEn: 'buffalo', meaningRu: 'буйвол' }] }),
+    );
+    expect(normalized.kun).toEqual(['うし']);
+    expect(normalized.on).toEqual(['ギュウ']);
+    expect(normalized.compounds[0].reading).toBe('すいぎゅう');
+  });
+});
+
+describe('parseOcrPage', () => {
+  it('parses valid JSON and rejects anything else', () => {
+    const withoutPage: Partial<ReturnType<typeof card>> = { ...card(1) };
+    delete withoutPage.page;
+    expect(parseOcrPage(JSON.stringify({ cards: [withoutPage] }))?.cards).toHaveLength(1);
+    expect(parseOcrPage('not json')).toBeNull();
+    expect(parseOcrPage(JSON.stringify({ cards: [{ number: 1 }] }))).toBeNull();
+  });
+});
+
+describe('validateKanjiCards', () => {
+  it('accepts a complete, clean range', () => {
+    expect(validateKanjiCards([card(1), card(2, { kanji: '馬' })], 1, 2)).toEqual([]);
+  });
+
+  it('reports gaps, duplicates and bad fields', () => {
+    const problems = validateKanjiCards(
+      [
+        card(1),
+        card(1, { kanji: '馬' }),
+        card(3, { kanji: '牛肉' }),
+        card(4, { kun: ['ウシ'], on: [] }),
+        card(5, { on: ['ぎゅう'], kun: [] }),
+        card(6, { compounds: [{ word: '牛肉', reading: 'ぎゅう にく', meaningEn: 'beef', meaningRu: '' }] }),
+        card(7, { picture: { x0: 0.6, y0: 0.2, x1: 0.5, y1: 0.3 } }),
+        card(8, { kun: [], on: [] }),
+      ],
+      1,
+      9,
+    );
+    expect(problems).toEqual(
+      expect.arrayContaining([
+        '#1: duplicate (pages 66, 66)',
+        '#2: missing',
+        '#3: kanji must be one character, got "牛肉"',
+        '#4: kun reading "ウシ" must be hiragana',
+        '#5: on reading "ぎゅう" must be katakana',
+        '#6: compound 牛肉 has a bad reading "ぎゅう にく"',
+        '#6: compound 牛肉 is missing a meaning',
+        '#7: picture box is invalid',
+        '#8: has no readings',
+        '#9: missing',
+      ]),
+    );
+  });
+});
