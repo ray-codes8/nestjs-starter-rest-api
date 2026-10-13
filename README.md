@@ -180,3 +180,14 @@ $ npm run migration:revert
 <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo.svg" width="150" alt="Nest Logo" /></a>
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=monstar-lab-oss_nestjs-starter-rest-api)
+
+## Nihongo quiz (pet project)
+
+Three modules added on top of the starter, used by the React app in `../nihongo-web`:
+
+- `vocabulary`: JLPT N5/N4 words (`GET /vocabulary`), seeded with `npm run seed:words`
+- `progress`: Leitner spaced repetition per user and word (`GET /progress/summary`)
+- `quiz`: multiple-choice vocabulary and verb-conjugation quizzes (`GET /quiz/vocabulary`, `GET /quiz/verbs`, `POST /quiz/answer`)
+
+Design: `docs/superpowers/specs/2026-10-13-nihongo-quiz-design.md`. Plan: `docs/superpowers/plans/2026-10-13-nihongo-quiz.md`.
+Vocabulary data: JLPT lists by Jonathan Waller (tanos.co.uk), CC BY.

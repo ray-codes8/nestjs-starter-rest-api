@@ -4,11 +4,28 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
+import { ExplanationsModule } from './explanations/explanations.module';
+import { GrammarModule } from './grammar/grammar.module';
+import { KanjiModule } from './kanji/kanji.module';
+import { ProgressModule } from './progress/progress.module';
+import { QuizModule } from './quiz/quiz.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
+import { VocabularyModule } from './vocabulary/vocabulary.module';
 
 @Module({
-  imports: [SharedModule, UserModule, AuthModule, ArticleModule],
+  imports: [
+    SharedModule,
+    UserModule,
+    AuthModule,
+    ArticleModule,
+    VocabularyModule,
+    ProgressModule,
+    QuizModule,
+    ExplanationsModule,
+    GrammarModule,
+    KanjiModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
