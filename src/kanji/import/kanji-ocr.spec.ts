@@ -1,4 +1,11 @@
-import { buildOcrRequest, KanjiCardOcr, normalizeCard, parseOcrPage, validateKanjiCards } from './kanji-ocr';
+import {
+  buildOcrRequest,
+  KanjiCardOcr,
+  mergeCards,
+  normalizeCard,
+  parseOcrPage,
+  validateKanjiCards,
+} from './kanji-ocr';
 
 const card = (number: number, overrides: Partial<KanjiCardOcr> = {}): KanjiCardOcr & { page: number } => ({
   page: 66,
@@ -83,5 +90,15 @@ describe('validateKanjiCards', () => {
         '#9: missing',
       ]),
     );
+  });
+});
+
+describe('mergeCards', () => {
+  it('replaces cards from re-read pages and keeps the rest, sorted by number', () => {
+    const existing = [card(1), { ...card(47), page: 54 }, card(50)];
+    const reread = [{ ...card(47, { meaningEn: 'friend' }), page: 54 }, { ...card(48, { kanji: '本' }), page: 54 }];
+    const merged = mergeCards(existing, reread, [54]);
+    expect(merged.map((c) => c.number)).toEqual([1, 47, 48, 50]);
+    expect(merged.find((c) => c.number === 47)?.meaningEn).toBe('friend');
   });
 });

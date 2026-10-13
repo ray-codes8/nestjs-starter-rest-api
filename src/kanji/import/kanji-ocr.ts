@@ -113,3 +113,13 @@ export function validateKanjiCards(cards: (KanjiCardOcr & { page: number })[], f
   }
   return problems;
 }
+
+// Cards from re-read pages replace the earlier ones from those pages; result sorted by number.
+export function mergeCards<T extends { number: number; page: number }>(
+  existing: T[],
+  incoming: T[],
+  rereadPages: number[],
+): T[] {
+  const reread = new Set(rereadPages);
+  return [...existing.filter((c) => !reread.has(c.page)), ...incoming].sort((a, b) => a.number - b.number);
+}

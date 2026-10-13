@@ -6,7 +6,15 @@ import * as path from 'path';
 import sharp from 'sharp';
 
 import { Box, cropPicture } from './kanji/import/crop';
-import { buildOcrRequest, KanjiCardOcr, normalizeCard, parseOcrPage, validateKanjiCards } from './kanji/import/kanji-ocr';
+import {
+  buildOcrRequest,
+  KanjiCardOcr,
+  mergeCards,
+  normalizeCard,
+  parseOcrPage,
+  validateKanjiCards,
+} from './kanji/import/kanji-ocr';
+import { KanjiData, loadKanjiFile } from './kanji/seed/kanji-seed';
 import { estimateBatchCostUsd } from './vocabulary/translation/ru-translation';
 
 dotenv.config();
@@ -65,7 +73,7 @@ async function submit(client: Anthropic) {
 }
 
 async function collect(client: Anthropic) {
-  const file = JSON.parse(fs.readFileSync(BATCH_FILE, 'utf8')) as { batchId: string; collected: boolean };
+  const file = JSON.parse(fs.readFileSync(BATCH_FILE, 'utf8')) as { batchId: string; pages: number[]; collected: boolean };
   const batch = await client.messages.batches.retrieve(file.batchId);
   if (batch.processing_status !== 'ended') {
     console.log(`batch ${batch.id}: ${batch.processing_status}`, batch.request_counts);
@@ -90,12 +98,13 @@ async function collect(client: Anthropic) {
   }
 
   const inRange = cards.filter((c) => c.number >= 1 && c.number <= 100);
-  problems.push(...validateKanjiCards(inRange, 1, 100));
+  // Field checks for this batch; completeness is checked on the merged set below.
+  problems.push(...validateKanjiCards(inRange, 1, 0));
 
   const overridesFile = path.join(DIR, 'overrides.json');
   const overrides: Record<string, Box> = fs.existsSync(overridesFile) ? JSON.parse(fs.readFileSync(overridesFile, 'utf8')) : {};
   fs.mkdirSync(PICTURES_DIR, { recursive: true });
-  const data = [];
+  const data: KanjiData[] = [];
   for (const card of inRange.sort((a, b) => a.number - b.number)) {
     const picture = `${String(card.number).padStart(3, '0')}.png`;
     try {
@@ -105,9 +114,15 @@ async function collect(client: Anthropic) {
     }
     data.push({ ...card, picture });
   }
-  fs.writeFileSync(path.join(DIR, 'kanji.json'), JSON.stringify({ cards: data }, null, 2));
+  // Re-reading a few pages keeps every other page's cards.
+  const merged = mergeCards(loadKanjiFile(DIR) ?? [], data, file.pages);
+  const numbers = new Set(merged.map((c) => c.number));
+  for (let n = 1; n <= 100; n++) {
+    if (!numbers.has(n)) problems.push(`#${n}: missing`);
+  }
+  fs.writeFileSync(path.join(DIR, 'kanji.json'), JSON.stringify({ cards: merged }, null, 2));
   fs.writeFileSync(BATCH_FILE, JSON.stringify({ ...file, collected: true }, null, 2));
-  console.log(`saved ${data.length} kanji, ${problems.length} problems`);
+  console.log(`saved ${data.length} kanji (${merged.length} total), ${problems.length} problems`);
   problems.forEach((p) => console.log(`  ${p}`));
 }
 
