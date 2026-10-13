@@ -42,22 +42,22 @@ Output goes to `local/kanji/`.
 | Step | Does | Cost |
 |---|---|---|
 | `--render` | Renders pages 26–95 to `pages/page-NNN.png` at 200 dpi (poppler `pdftoppm`) | free |
-| `--crop` | Finds card frames and each card's pictograph cell, and writes `crops/page-NNN-S.png` (S = slot 1..3 top-down). Pages without card frames are skipped. Also writes `crops/index.json` with `{ page, slot }` | free |
 | `--estimate` | Counts tokens for the OCR requests and prints a dollar estimate | free |
 | `--submit` | Message Batch, one request per page that has cards. Model `claude-opus-5-5`, effort `low`, JSON-schema output. Refuses to run while a batch is uncollected | paid, after user approval |
-| `--collect` | Parses the results and joins cards to crops by (page, slot order). Writes `kanji.json` and `pictures/NNN.png` (by kanji number). Reports problems | free |
+| `--collect` | Parses the results. Crops each card's pictograph from the 200 dpi page by the box Claude returned, insets it a few px and trims white margins. Writes `kanji.json` and `pictures/NNN.png` (by kanji number). Reports problems | free |
 | `--review` | Writes `review.html`: a grid of every card with its picture and the extracted text, for visual checking | free |
 
 - OCR schema per page: `cards: [{ number, kanji, kun: string[], on: string[], meaningEn,
-  meaningRu, strokes, originEn, originRu, compounds: [{ word, reading, meaningEn, meaningRu }] }]`.
+  meaningRu, strokes, originEn, originRu, compounds: [{ word, reading, meaningEn, meaningRu }],
+  picture: { x0, y0, x1, y1 } }]`, where the picture box is the pictograph cell in page fractions (0..1).
   Cards are listed top to bottom. `kun` is in hiragana and `on` in katakana, as printed.
   Translations to Russian are produced in the same request.
-- Frame detection works on the grayscale page:
-  - long horizontal and vertical dark runs give the outer card rectangles;
-  - the pictograph cell is the middle cell of the card's second row (between the readings
-    column and the origin text column);
-  - if detection finds a count different from the OCR card count, `--collect` reports the page
-    as a problem instead of guessing.
+- Pictograph cropping uses the box from the OCR (revised after a spike: frame detection by pixel
+  heuristics found only about a third of the cells on these skewed scans).
+  - Spike on pages 26 and 66 ($0.03): every box was tight around the drawing cell.
+  - The crop is inset by 1% of the box size to drop border lines, then white margins are trimmed.
+  - Boxes outside 0..1, or degenerate ones, are reported as problems.
+  - `local/kanji/overrides.json` can replace a box by kanji number.
 - Validation in `--collect`:
   - numbers 1–100 complete, with no duplicates;
   - every card has a kanji, at least one reading and a picture;
@@ -115,9 +115,8 @@ Output goes to `local/kanji/`.
 ## Testing
 
 - Unit:
-  - frame and cell detection on a synthetic grayscale image with drawn rectangles;
+  - crop geometry (fractions → pixels, inset, bounds, degenerate boxes) on a synthetic image, with border lines removed by the inset and trim;
   - the OCR result parser and validator (complete, duplicate, missing reading, wrong kana script);
-  - the crop-to-card join (count mismatch reported);
   - the question builders for the three types (unique options, the answer included, no leak);
   - answer checking.
 - e2e: ranges, the three quiz types, answers (404/400), and the picture route serving only valid
@@ -128,9 +127,8 @@ Output goes to `local/kanji/`.
 
 ## Risks
 
-- **Frame detection on some scans** (skew, broken lines). Mitigation: count check against OCR,
-  plus the review page. Fallback: fixed relative coordinates for that page, recorded in
-  `local/kanji/overrides.json`.
+- **Imprecise boxes from the OCR.** Mitigation: inset and trim, the review page, and per-kanji box
+  overrides in `local/kanji/overrides.json`.
 - **OCR mistakes in readings.** Mitigation: script validation, the review page, and hand edits
   in `kanji.json` (re-run `seed:kanji`).
 
