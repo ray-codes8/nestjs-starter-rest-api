@@ -72,6 +72,7 @@ export class ExplanationService {
         kanji: word.kanji,
         kana: word.kana,
         meaningEn: word.meaningEn,
+        meaningRu: word.meaningRu,
         quizType: input.quizType,
         form,
         correctAnswer,

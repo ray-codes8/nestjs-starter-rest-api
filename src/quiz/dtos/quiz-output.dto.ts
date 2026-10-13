@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { VerbForm } from '../domain/conjugation';
 
-export class VocabularyQuestionOutput {
+export class WordQuestionOutput {
   @ApiProperty()
   wordId: number;
 
@@ -16,7 +16,15 @@ export class VocabularyQuestionOutput {
   options: string[];
 }
 
-export class VerbQuestionOutput extends VocabularyQuestionOutput {
+export class VocabularyQuestionOutput extends WordQuestionOutput {
+  @ApiProperty({
+    type: [String],
+    description: 'Russian label for each option, same order (English fallback)',
+  })
+  optionsRu: string[];
+}
+
+export class VerbQuestionOutput extends WordQuestionOutput {
   @ApiProperty({ enum: VerbForm })
   form: VerbForm;
 }

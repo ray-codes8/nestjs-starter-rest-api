@@ -7,6 +7,7 @@ export interface ExplanationPromptInput {
   kanji: string | null;
   kana: string;
   meaningEn: string;
+  meaningRu: string | null;
   quizType: QuizType;
   form: VerbForm | null;
   correctAnswer: string;

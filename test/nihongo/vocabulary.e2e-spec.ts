@@ -27,7 +27,7 @@ describe('VocabularyController (e2e)', () => {
     expect(response.body.data).toHaveLength(2);
     expect(response.body.meta.count).toBe(6);
     expect(response.body.data[0]).toEqual(
-      expect.objectContaining({ kana: expect.any(String), meaningEn: expect.any(String), level: 'N5' }),
+      expect.objectContaining({ kana: expect.any(String), meaningEn: expect.any(String), meaningRu: null, level: 'N5' }),
     );
   });
 

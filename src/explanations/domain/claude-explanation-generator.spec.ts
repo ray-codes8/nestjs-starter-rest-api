@@ -10,6 +10,7 @@ const input = {
   kanji: '本',
   kana: 'ほん',
   meaningEn: 'book',
+  meaningRu: null,
   quizType: QuizType.Vocabulary,
   form: null,
   correctAnswer: 'book',

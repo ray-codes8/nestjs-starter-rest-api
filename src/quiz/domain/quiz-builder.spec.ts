@@ -36,7 +36,13 @@ describe('buildVocabularyQuestion', () => {
     expect(q.options).toHaveLength(4);
     expect(new Set(q.options).size).toBe(4);
     expect(q.options).toContain('book');
-    expect(q).toEqual({ wordId: book.id, kanji: '本', kana: 'ほん', options: expect.any(Array) });
+    expect(q).toEqual({
+      wordId: book.id,
+      kanji: '本',
+      kana: 'ほん',
+      options: expect.any(Array),
+      optionsRu: expect.any(Array),
+    });
   });
 
   it('prefers distractors with the same part of speech', () => {
@@ -65,6 +71,25 @@ describe('buildVocabularyQuestion', () => {
   it('keeps kana-only words as kanji = null', () => {
     const koko = word({ kana: 'ここ', meaningEn: 'here' });
     expect(buildVocabularyQuestion(koko, [koko, ...nouns]).kanji).toBeNull();
+  });
+  it('adds Russian labels parallel to the English options, falling back to English', () => {
+    const ruBook = word({ kanji: '本', kana: 'ほん', meaningEn: 'book', meaningRu: 'книга' });
+    const ruWater = word({ meaningEn: 'water', meaningRu: 'вода' });
+    const noRu = word({ meaningEn: 'dog' });
+    const q = buildVocabularyQuestion(ruBook, [ruBook, ruWater, noRu]);
+    const byEn = Object.fromEntries(q.options.map((en, i) => [en, q.optionsRu[i]]));
+    expect(byEn).toEqual({ book: 'книга', water: 'вода', dog: 'dog' });
+  });
+
+  it('never shows two options with the same Russian text', () => {
+    const big = word({ meaningEn: 'big', meaningRu: 'большой' });
+    const large = word({ meaningEn: 'large', meaningRu: 'большой' });
+    const others = ['вода', 'гора', 'собака'].map((ru, i) => word({ meaningEn: `x${i}`, meaningRu: ru }));
+    for (let i = 0; i < 20; i++) {
+      const q = buildVocabularyQuestion(big, [big, large, ...others]);
+      expect(new Set(q.optionsRu).size).toBe(q.optionsRu.length);
+      expect(q.options).not.toContain('large');
+    }
   });
 });
 

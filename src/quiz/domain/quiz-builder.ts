@@ -11,14 +11,19 @@ export type Rng = () => number;
 export const OPTIONS_PER_QUESTION = 4;
 const DISTRACTOR_COUNT = OPTIONS_PER_QUESTION - 1;
 
-export interface VocabularyQuestion {
+interface WordQuestion {
   wordId: number;
   kanji: string | null;
   kana: string;
   options: string[];
 }
 
-export interface VerbQuestion extends VocabularyQuestion {
+export interface VocabularyQuestion extends WordQuestion {
+  // Russian label for each option (same order); English when a word has no translation.
+  optionsRu: string[];
+}
+
+export interface VerbQuestion extends WordQuestion {
   form: VerbForm;
 }
 
@@ -52,22 +57,28 @@ export function buildVocabularyQuestion(
   pool: Word[],
   rng: Rng = Math.random,
 ): VocabularyQuestion {
+  const label = (w: Word) => ({ en: w.meaningEn, ru: w.meaningRu ?? w.meaningEn });
   const others = pool.filter((w) => w.id !== word.id);
-  const meanings = (sameKind: boolean) =>
-    shuffle(
-      others
-        .filter((w) => (w.partOfSpeech === word.partOfSpeech) === sameKind)
-        .map((w) => w.meaningEn),
-      rng,
-    );
+  const candidates = [
+    ...shuffle(others.filter((w) => w.partOfSpeech === word.partOfSpeech), rng),
+    ...shuffle(others.filter((w) => w.partOfSpeech !== word.partOfSpeech), rng),
+  ].map(label);
 
-  const distractors = pickDistractors(word.meaningEn, meanings(true), meanings(false));
+  // Options must be distinct in both languages (big/large are both «большой»).
+  const chosen = [label(word)];
+  for (const candidate of candidates) {
+    if (chosen.length === OPTIONS_PER_QUESTION) break;
+    if (chosen.some((o) => o.en === candidate.en || o.ru === candidate.ru)) continue;
+    chosen.push(candidate);
+  }
 
+  const options = shuffle(chosen, rng);
   return {
     wordId: word.id,
     kanji: word.kanji,
     kana: word.kana,
-    options: shuffle([word.meaningEn, ...distractors], rng),
+    options: options.map((o) => o.en),
+    optionsRu: options.map((o) => o.ru),
   };
 }
 

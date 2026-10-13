@@ -34,7 +34,10 @@ export function buildExplanationPrompt(input: ExplanationPromptInput): string {
     input.quizType === QuizType.Verb
       ? 'Quiz: verb conjugation (choose the correct conjugated form)'
       : 'Quiz: vocabulary (choose the English meaning of a Japanese word)',
-    `Word: ${word}, meaning "${input.meaningEn}"`,
+    `Word: ${word}, meaning "${input.meaningEn}"` +
+      (input.language === ExplanationLanguage.Ru && input.meaningRu
+        ? ` (Russian: "${input.meaningRu}")`
+        : ''),
   ];
   if (input.quizType === QuizType.Verb && input.form) {
     lines.push(`Target form: ${FORM_NAMES[input.form]}`);

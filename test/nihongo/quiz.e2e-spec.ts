@@ -33,7 +33,7 @@ describe('QuizController (e2e)', () => {
     for (const q of questions) {
       expect(q.options).toHaveLength(4);
       expect(new Set(q.options).size).toBe(4);
-      expect(Object.keys(q).sort()).toEqual(['kana', 'kanji', 'options', 'wordId']);
+      expect(Object.keys(q).sort()).toEqual(['kana', 'kanji', 'options', 'optionsRu', 'wordId']);
     }
   });
 

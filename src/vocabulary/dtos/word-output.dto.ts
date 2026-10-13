@@ -25,6 +25,10 @@ export class WordOutput {
   meaningEn: string;
 
   @Expose()
+  @ApiPropertyOptional({ type: String, nullable: true })
+  meaningRu: string | null;
+
+  @Expose()
   @ApiProperty({ enum: PartOfSpeech })
   partOfSpeech: PartOfSpeech;
 

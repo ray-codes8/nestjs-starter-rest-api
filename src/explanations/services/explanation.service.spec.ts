@@ -91,6 +91,7 @@ describe('ExplanationService', () => {
       kanji: '食べる',
       kana: 'たべる',
       meaningEn: 'to eat',
+      meaningRu: null,
       quizType: QuizType.Verb,
       form: VerbForm.Te,
       correctAnswer: '食べて',
