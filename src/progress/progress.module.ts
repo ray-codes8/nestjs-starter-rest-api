@@ -7,9 +7,11 @@ import { VocabularyModule } from '../vocabulary/vocabulary.module';
 import { ProgressController } from './controllers/progress.controller';
 import { AnswerLog } from './entities/answer-log.entity';
 import { UserExerciseProgress } from './entities/user-exercise-progress.entity';
+import { UserKanjiProgress } from './entities/user-kanji-progress.entity';
 import { UserWordProgress } from './entities/user-word-progress.entity';
 import { AnswerLogRepository } from './repositories/answer-log.repository';
 import { UserExerciseProgressRepository } from './repositories/user-exercise-progress.repository';
+import { UserKanjiProgressRepository } from './repositories/user-kanji-progress.repository';
 import { UserWordProgressRepository } from './repositories/user-word-progress.repository';
 import { ProgressService } from './services/progress.service';
 
@@ -19,6 +21,7 @@ import { ProgressService } from './services/progress.service';
     TypeOrmModule.forFeature([
       UserWordProgress,
       UserExerciseProgress,
+      UserKanjiProgress,
       AnswerLog,
     ]),
     VocabularyModule,
@@ -27,6 +30,7 @@ import { ProgressService } from './services/progress.service';
     ProgressService,
     UserWordProgressRepository,
     UserExerciseProgressRepository,
+    UserKanjiProgressRepository,
     AnswerLogRepository,
     JwtAuthStrategy,
   ],

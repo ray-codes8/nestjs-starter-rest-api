@@ -23,5 +23,7 @@ export const configModuleOptions: ConfigModuleOptions = {
     DEFAULT_ADMIN_USER_PASSWORD: Joi.string().required(),
     ANTHROPIC_API_KEY: Joi.string().allow('').optional(),
     ANTHROPIC_MODEL: Joi.string().optional(),
+    KANJI_DIR: Joi.string().optional(),
+    KANJI_BOOK_PDF: Joi.string().allow('').optional(),
   }),
 };

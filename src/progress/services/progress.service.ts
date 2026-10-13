@@ -10,6 +10,7 @@ import { computeStreak, toDayString } from '../domain/streak';
 import { ProgressSummaryOutput } from '../dtos/progress-summary-output.dto';
 import { AnswerLogRepository } from '../repositories/answer-log.repository';
 import { UserExerciseProgressRepository } from '../repositories/user-exercise-progress.repository';
+import { UserKanjiProgressRepository } from '../repositories/user-kanji-progress.repository';
 import { UserWordProgressRepository } from '../repositories/user-word-progress.repository';
 
 const ACCURACY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
@@ -20,6 +21,7 @@ export class ProgressService {
   constructor(
     private progressRepository: UserWordProgressRepository,
     private exerciseProgressRepository: UserExerciseProgressRepository,
+    private kanjiProgressRepository: UserKanjiProgressRepository,
     private answerLogRepository: AnswerLogRepository,
     private wordRepository: WordRepository,
     private readonly logger: AppLogger,
@@ -51,6 +53,8 @@ export class ProgressService {
     await this.answerLogRepository.save({
       userId,
       wordId,
+      exerciseId: null,
+      kanjiId: null,
       quizType,
       isCorrect,
       createdAt: now,
@@ -83,7 +87,43 @@ export class ProgressService {
       userId,
       wordId: null,
       exerciseId,
+      kanjiId: null,
       quizType: QuizType.Grammar,
+      isCorrect,
+      createdAt: now,
+    });
+
+    return next;
+  }
+
+  async recordKanjiAnswer(
+    userId: number,
+    kanjiId: number,
+    quizType: QuizType,
+    isCorrect: boolean,
+    now: Date,
+  ): Promise<{ box: number; nextReviewAt: Date }> {
+    const existing = await this.kanjiProgressRepository.findOne({
+      where: { userId, kanjiId, quizType },
+    });
+    const next = applyAnswer(existing?.box ?? null, isCorrect, now);
+
+    await this.kanjiProgressRepository.save({
+      ...existing,
+      userId,
+      kanjiId,
+      quizType,
+      box: next.box,
+      nextReviewAt: next.nextReviewAt,
+      correctCount: (existing?.correctCount ?? 0) + (isCorrect ? 1 : 0),
+      wrongCount: (existing?.wrongCount ?? 0) + (isCorrect ? 0 : 1),
+    });
+    await this.answerLogRepository.save({
+      userId,
+      wordId: null,
+      exerciseId: null,
+      kanjiId,
+      quizType,
       isCorrect,
       createdAt: now,
     });

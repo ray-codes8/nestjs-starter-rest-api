@@ -25,6 +25,7 @@
     "seed:grammar": "ts-node -r tsconfig-paths/register src/seed-grammar.ts",
     "translate:meanings": "ts-node -r tsconfig-paths/register src/translate-meanings.ts",
     "kanji:import": "ts-node -r tsconfig-paths/register src/kanji-import.ts",
+    "seed:kanji": "ts-node -r tsconfig-paths/register src/seed-kanji.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --runInBand",

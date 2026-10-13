@@ -27,6 +27,9 @@ export default (): any => ({
     ),
   },
   defaultAdminUserPassword: process.env.DEFAULT_ADMIN_USER_PASSWORD,
+  kanji: {
+    dir: process.env.KANJI_DIR || 'local/kanji',
+  },
   anthropic: {
     apiKey: process.env.ANTHROPIC_API_KEY || undefined,
     model: process.env.ANTHROPIC_MODEL || 'claude-opus-5-5',
