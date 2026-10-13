@@ -12,6 +12,7 @@ import { AnswerLogRepository } from '../repositories/answer-log.repository';
 import { UserWordProgressRepository } from '../repositories/user-word-progress.repository';
 
 const ACCURACY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+const STREAK_WINDOW_MS = 400 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class ProgressService {
@@ -69,7 +70,10 @@ export class ProgressService {
         this.wordRepository.count({ where: { level } }),
         this.progressRepository.countLearned(userId, level),
         this.progressRepository.countDue(userId, level, now),
-        this.answerLogRepository.getActiveDays(userId),
+        this.answerLogRepository.getActiveDays(
+          userId,
+          new Date(now.getTime() - STREAK_WINDOW_MS),
+        ),
         this.answerLogRepository.getAccuracySince(
           userId,
           new Date(now.getTime() - ACCURACY_WINDOW_MS),

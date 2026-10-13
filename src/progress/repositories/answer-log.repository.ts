@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
+import { toDayString } from '../domain/streak';
 import { AnswerLog } from '../entities/answer-log.entity';
 
 @Injectable()
@@ -9,14 +10,14 @@ export class AnswerLogRepository extends Repository<AnswerLog> {
     super(AnswerLog, dataSource.createEntityManager());
   }
 
-  async getActiveDays(userId: number): Promise<string[]> {
+  async getActiveDays(userId: number, since: Date): Promise<string[]> {
     const rows = await this.createQueryBuilder('a')
-      .select(`DISTINCT TO_CHAR(a."createdAt", 'YYYY-MM-DD')`, 'day')
+      .select('a.createdAt', 'createdAt')
       .where('a.userId = :userId', { userId })
-      .orderBy('day', 'DESC')
-      .limit(400)
-      .getRawMany<{ day: string }>();
-    return rows.map((row) => row.day);
+      .andWhere('a.createdAt >= :since', { since })
+      .getRawMany<{ createdAt: Date }>();
+    // Days are derived in JS so they use the same calendar as toDayString(now).
+    return [...new Set(rows.map((row) => toDayString(new Date(row.createdAt))))];
   }
 
   async getAccuracySince(userId: number, since: Date): Promise<number | null> {

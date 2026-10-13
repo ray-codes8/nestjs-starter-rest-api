@@ -3,6 +3,8 @@ import request from 'supertest';
 
 import { QuizType } from '../../src/progress/constants/quiz-type.constant';
 import { ProgressService } from '../../src/progress/services/progress.service';
+import { RequestContext } from '../../src/shared/request-context/request-context.dto';
+import { JlptLevel } from '../../src/vocabulary/constants/word.constant';
 import { WordRepository } from '../../src/vocabulary/repositories/word.repository';
 import { closeDBAfterTest } from '../test-utils';
 import {
@@ -57,6 +59,20 @@ describe('ProgressController (e2e)', () => {
       streakDays: 1,
       accuracy7d: 0.5,
     });
+  });
+
+  it('counts the streak by UTC day even when the local date differs', async () => {
+    const otherToken = await registerAndLogin(app, 'streak-user');
+    const userId = JSON.parse(Buffer.from(otherToken.split('.')[1], 'base64').toString()).sub as number;
+    const progress = app.get(ProgressService);
+    const [word] = await app.get(WordRepository).find({ order: { id: 'ASC' } });
+    // 20:00 UTC is already the next calendar day in UTC+9 (and still the same day in UTC-5).
+    const lateEvening = new Date('2026-10-13T20:00:00Z');
+    await progress.recordAnswer(userId, word.id, QuizType.Vocabulary, true, lateEvening);
+
+    const ctx = { user: { id: userId } } as RequestContext;
+    const summary = await progress.getSummary(ctx, JlptLevel.N5, lateEvening);
+    expect(summary.streakDays).toBe(1);
   });
 
   it('rejects an unknown level', () => getSummary('N1').expect(HttpStatus.BAD_REQUEST));

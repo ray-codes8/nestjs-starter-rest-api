@@ -63,9 +63,11 @@ export class WordRepository extends Repository<Word> {
     }
     return query
       .addSelect(
-        `CASE WHEN p."nextReviewAt" <= NOW() THEN 0 WHEN p."id" IS NULL THEN 1 ELSE 2 END`,
+        `CASE WHEN p."nextReviewAt" <= :now THEN 0 WHEN p."id" IS NULL THEN 1 ELSE 2 END`,
         'priority',
       )
+      // Compare with a JS date, as stored values are written from JS dates too.
+      .setParameter('now', new Date())
       .orderBy('priority', 'ASC')
       .addOrderBy('p.nextReviewAt', 'ASC', 'NULLS LAST')
       .addOrderBy('RANDOM()')

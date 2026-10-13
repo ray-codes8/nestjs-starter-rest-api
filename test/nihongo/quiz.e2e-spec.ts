@@ -1,6 +1,8 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import request from 'supertest';
 
+import { QuizType } from '../../src/progress/constants/quiz-type.constant';
+import { ProgressService } from '../../src/progress/services/progress.service';
 import { Word } from '../../src/vocabulary/entities/word.entity';
 import { closeDBAfterTest } from '../test-utils';
 import {
@@ -89,6 +91,16 @@ describe('QuizController (e2e)', () => {
     await auth(request(server()).post('/quiz/answer')).send({ quizType: 'verb', wordId: book.id, answer: 'x', form: 'te' }).expect(HttpStatus.BAD_REQUEST);
     await auth(request(server()).post('/quiz/answer')).send({ quizType: 'vocabulary', wordId: 99999, answer: 'x' }).expect(HttpStatus.NOT_FOUND);
     await auth(request(server()).post('/quiz/answer')).send({ quizType: 'kanji', wordId: book.id, answer: 'x' }).expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('puts a word that became due an hour ago first, whatever the server timezone', async () => {
+    const userId = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()).sub as number;
+    const dog = words.find((w) => w.kana === 'いぬ')!;
+    // Wrong answer 25 h ago → box 1 → due 1 h ago.
+    await app.get(ProgressService).recordAnswer(userId, dog.id, QuizType.Vocabulary, false, new Date(Date.now() - 25 * 60 * 60 * 1000));
+
+    const response = await auth(request(server()).get('/quiz/vocabulary?level=N5&count=1')).expect(HttpStatus.OK);
+    expect(response.body.data[0].wordId).toBe(dog.id);
   });
 
   it('requires a token', () => request(server()).get('/quiz/vocabulary?level=N5').expect(HttpStatus.UNAUTHORIZED));
