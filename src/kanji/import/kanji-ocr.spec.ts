@@ -46,6 +46,15 @@ describe('normalizeCard', () => {
   });
 });
 
+describe('normalizeCard alternatives', () => {
+  it('keeps the first of several readings written with a slash', () => {
+    const normalized = normalizeCard(
+      card(1, { compounds: [{ word: '日本', reading: 'にほん/にっぽん', meaningEn: 'Japan', meaningRu: 'Япония' }] }),
+    );
+    expect(normalized.compounds[0].reading).toBe('にほん');
+  });
+});
+
 describe('parseOcrPage', () => {
   it('parses valid JSON and rejects anything else', () => {
     const withoutPage: Partial<ReturnType<typeof card>> = { ...card(1) };
