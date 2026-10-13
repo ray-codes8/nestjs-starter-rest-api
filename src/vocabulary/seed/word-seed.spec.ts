@@ -6,6 +6,7 @@ import {
   loadWordSeeds,
   parseCsv,
   toWordSeed,
+  wordKey,
   wordSeedFilePath,
 } from './word-seed';
 
@@ -65,6 +66,7 @@ describe('toWordSeed', () => {
       kana: 'あそぶ',
       romaji: 'asobu',
       meaningEn: 'to play',
+      meaningRu: null,
       partOfSpeech: PartOfSpeech.Verb,
       verbGroup: 1,
       level: JlptLevel.N5,
@@ -144,5 +146,18 @@ describe('loadWordSeeds on the real data files', () => {
     expect(seeds.filter((s) => s.verbGroup !== null).length).toBeGreaterThan(90);
     const keys = seeds.map((s) => `${s.kana}|${s.kanji}`);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+});
+
+describe('Russian meanings', () => {
+  it('builds the word key from level, kana and kanji', () => {
+    expect(wordKey({ level: JlptLevel.N5, kana: 'ほん', kanji: '本' })).toBe('N5|ほん|本');
+    expect(wordKey({ level: JlptLevel.N5, kana: 'ここ', kanji: null })).toBe('N5|ここ|');
+  });
+
+  it('applies meaningRu from the map and leaves missing ones null', () => {
+    const csv = 'expression,reading,meaning,tags,guid\n本,ほん,book,,1\nここ,ここ,here,,2\n';
+    const seeds = loadWordSeeds(csv, JlptLevel.N5, { 'N5|ほん|本': 'книга' });
+    expect(seeds.map((s) => s.meaningRu)).toEqual(['книга', null]);
   });
 });

@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 import { toRomaji } from 'wanakana';
 
@@ -12,6 +13,7 @@ export interface WordSeed {
   kana: string;
   romaji: string;
   meaningEn: string;
+  meaningRu: string | null;
   partOfSpeech: PartOfSpeech;
   verbGroup: VerbGroup | null;
   level: JlptLevel;
@@ -179,6 +181,7 @@ export function toWordSeed(
     kana,
     romaji: toRomaji(kana),
     meaningEn,
+    meaningRu: null,
     partOfSpeech,
     verbGroup:
       partOfSpeech === PartOfSpeech.Verb
@@ -188,7 +191,31 @@ export function toWordSeed(
   };
 }
 
-export function loadWordSeeds(csvText: string, level: JlptLevel): WordSeed[] {
+export type RuMeanings = Record<string, string>;
+
+export function wordKey(word: {
+  level: JlptLevel;
+  kana: string;
+  kanji: string | null;
+}): string {
+  return `${word.level}|${word.kana}|${word.kanji ?? ''}`;
+}
+
+export function ruMeaningsFilePath(): string {
+  return path.join(__dirname, 'data', 'ru-meanings.json');
+}
+
+export function loadRuMeanings(): RuMeanings {
+  return fs.existsSync(ruMeaningsFilePath())
+    ? (JSON.parse(fs.readFileSync(ruMeaningsFilePath(), 'utf8')) as RuMeanings)
+    : {};
+}
+
+export function loadWordSeeds(
+  csvText: string,
+  level: JlptLevel,
+  ruMeanings: RuMeanings = {},
+): WordSeed[] {
   const [header, ...rows] = parseCsv(csvText);
   const expressionIdx = header.indexOf('expression');
   const readingIdx = header.indexOf('reading');
@@ -208,6 +235,7 @@ export function loadWordSeeds(csvText: string, level: JlptLevel): WordSeed[] {
     const key = seed && `${seed.kana}|${seed.kanji}`;
     if (seed && key && !seen.has(key)) {
       seen.add(key);
+      seed.meaningRu = ruMeanings[wordKey(seed)] ?? null;
       seeds.push(seed);
     }
   }
