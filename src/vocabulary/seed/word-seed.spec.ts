@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { JlptLevel, PartOfSpeech } from '../constants/word.constant';
 import {
   classifyVerbGroup,
+  loadRuMeanings,
   loadWordSeeds,
   parseCsv,
   toWordSeed,
@@ -159,5 +160,16 @@ describe('Russian meanings', () => {
     const csv = 'expression,reading,meaning,tags,guid\n本,ほん,book,,1\nここ,ここ,here,,2\n';
     const seeds = loadWordSeeds(csv, JlptLevel.N5, { 'N5|ほん|本': 'книга' });
     expect(seeds.map((s) => s.meaningRu)).toEqual(['книга', null]);
+  });
+});
+
+describe('ru-meanings.json', () => {
+  it('has a Russian meaning for every seeded word', () => {
+    const ru = loadRuMeanings();
+    const missing = [JlptLevel.N5, JlptLevel.N4]
+      .flatMap((level) => loadWordSeeds(fs.readFileSync(wordSeedFilePath(level), 'utf8'), level, ru))
+      .filter((s) => !s.meaningRu || !/[а-яё]/i.test(s.meaningRu))
+      .map(wordKey);
+    expect(missing).toEqual([]);
   });
 });
